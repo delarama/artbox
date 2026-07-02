@@ -50,3 +50,11 @@ export async function sendOrderConfirmationEmail(email: string, orderNo: string)
     html: `<p>Thanks for your order <strong>${orderNo}</strong>.</p><p><a href="${url}">Track your order</a></p>`,
   });
 }
+
+export async function sendOtpEmail(email: string, code: string) {
+  return sendEmail({
+    to: email,
+    subject: "Your ArtBox sign-in code",
+    html: `<p>Your sign-in code is:</p><p style="font-size:28px;font-weight:700;letter-spacing:0.2em">${code}</p><p>This code expires in 10 minutes.</p>`,
+  });
+}

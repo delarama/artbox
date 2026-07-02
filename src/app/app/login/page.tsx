@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { AppBackHeader } from "@/components/layout/AppBackHeader";
 import { MobileFrame } from "@/components/layout/MobileFrame";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { registerAccount } from "@/lib/api-client";
+import { fetchAuthConfig, registerAccount, sendOtpCode, type AuthConfig } from "@/lib/api-client";
 import { useOrder } from "@/lib/order-context";
 
 function GoogleIcon() {
@@ -30,33 +30,66 @@ function AppleIcon() {
   );
 }
 
-export default function LoginPage() {
+type AuthMethod = "password" | "otp";
+
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/app/choose";
   const { state, setAuthMode, setAuth, completeAuth } = useOrder();
+  const [authConfig, setAuthConfig] = useState<AuthConfig | null>(null);
+  const [method, setMethod] = useState<AuthMethod>("password");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [devCodeHint, setDevCodeHint] = useState<string | null>(null);
   const isSignup = state.authMode === "signup";
 
-  const proceed = async () => {
+  useEffect(() => {
+    fetchAuthConfig().then(setAuthConfig).catch(() => setAuthConfig(null));
+  }, []);
+
+  const finishSignIn = () => {
+    completeAuth();
+    router.refresh();
+    router.push(callbackUrl);
+  };
+
+  const proceedWithPassword = async () => {
     setError(null);
+    const email = state.auth.email.trim();
+    const password = state.auth.password;
+    const name = state.auth.name.trim();
+
+    if (!email) {
+      setError("Enter your email address.");
+      return;
+    }
+    if (isSignup && !name) {
+      setError("Enter your first name.");
+      return;
+    }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
     setLoading(true);
     try {
       if (isSignup) {
-        await registerAccount(state.auth.name, state.auth.email, state.auth.password);
+        await registerAccount(name, email, password);
       }
       const result = await signIn("credentials", {
-        email: state.auth.email,
-        password: state.auth.password,
+        email,
+        password,
         redirect: false,
       });
       if (result?.error) {
         setError(isSignup ? "Account created, but sign-in failed. Try logging in." : "Invalid email or password.");
         return;
       }
-      completeAuth();
-      router.push(callbackUrl);
+      finishSignIn();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -64,10 +97,64 @@ export default function LoginPage() {
     }
   };
 
-  const socialSignIn = async (provider: "google" | "apple") => {
+  const sendCode = async () => {
     setError(null);
-    await signIn(provider, { callbackUrl: "/app/choose" });
+    setDevCodeHint(null);
+    const email = state.auth.email.trim();
+    if (!email) {
+      setError("Enter your email address.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await sendOtpCode(email);
+      setOtpSent(true);
+      if (result.devCode) setDevCodeHint(result.devCode);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send sign-in code");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const proceedWithOtp = async () => {
+    setError(null);
+    const email = state.auth.email.trim();
+    const code = otpCode.trim();
+    if (!email || !code) {
+      setError("Enter your email and the 6-digit code.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await signIn("otp", {
+        email,
+        code,
+        redirect: false,
+      });
+      if (result?.error) {
+        setError("Invalid or expired code. Request a new one.");
+        return;
+      }
+      finishSignIn();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign-in failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const socialSignIn = (provider: "google" | "apple") => {
+    setError(null);
+    void signIn(provider, { callbackUrl });
+  };
+
+  const showGoogle = authConfig?.google ?? false;
+  const showApple = authConfig?.apple ?? false;
+  const showOtp = authConfig?.otp ?? false;
+  const showSocial = showGoogle || showApple;
 
   return (
     <MobileFrame>
@@ -75,76 +162,177 @@ export default function LoginPage() {
         <AppBackHeader href="/" />
         <div className="flex flex-1 flex-col px-6 pb-6 pt-9">
           <h1 className="mb-1.5 text-[26px] font-bold tracking-tight text-navy">
-            {isSignup ? "Create your account" : "Welcome back"}
+            {method === "otp" ? "Sign in with email" : isSignup ? "Create your account" : "Welcome back"}
           </h1>
           <p className="mb-6 text-[15px] leading-relaxed text-body-alt">
-            {isSignup
-              ? "Save your gallery, track orders, and pick up right where you left off."
-              : "Log in to track your order and manage your books."}
+            {method === "otp"
+              ? "We'll email you a one-time code — no password needed."
+              : isSignup
+                ? "Save your gallery, track orders, and pick up right where you left off."
+                : "Log in to track your order and manage your books."}
           </p>
 
-          <div className="mb-5 flex flex-col gap-3">
-            <Button variant="outline" fullWidth onClick={() => socialSignIn("google")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
-              <GoogleIcon /> Continue with Google
-            </Button>
-            <Button variant="outline" fullWidth onClick={() => socialSignIn("apple")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
-              <AppleIcon /> Continue with Apple
-            </Button>
-          </div>
+          {showSocial ? (
+            <div className="mb-5 flex flex-col gap-3">
+              {showGoogle ? (
+                <Button variant="outline" fullWidth onClick={() => socialSignIn("google")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
+                  <GoogleIcon /> Continue with Google
+                </Button>
+              ) : null}
+              {showApple ? (
+                <Button variant="outline" fullWidth onClick={() => socialSignIn("apple")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
+                  <AppleIcon /> Continue with Apple
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
 
-          <div className="mb-5 flex items-center gap-3">
-            <span className="h-px flex-1 bg-border" />
-            <span className="text-xs font-medium text-[#B0A6A9]">or</span>
-            <span className="h-px flex-1 bg-border" />
-          </div>
+          {showSocial && method === "password" ? (
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px flex-1 bg-border" />
+              <span className="text-xs font-medium text-[#B0A6A9]">or</span>
+              <span className="h-px flex-1 bg-border" />
+            </div>
+          ) : null}
 
-          <div className="flex flex-col gap-3.5">
-            {isSignup ? (
-              <Input
-                label="First name"
-                placeholder="First name"
-                value={state.auth.name}
-                onChange={(e) => setAuth({ name: e.target.value })}
-              />
-            ) : null}
-            <Input
-              label="Email"
-              placeholder="Email"
-              inputMode="email"
-              value={state.auth.email}
-              onChange={(e) => setAuth({ email: e.target.value })}
-            />
-            <Input
-              label="Password"
-              placeholder="Password"
-              type="password"
-              value={state.auth.password}
-              onChange={(e) => setAuth({ password: e.target.value })}
-            />
-            {!isSignup ? (
-              <Link href="/app/forgot-password" className="-mt-1 self-end text-[13px] font-medium text-muted no-underline">
-                Forgot password?
-              </Link>
-            ) : null}
-          </div>
+          {showOtp ? (
+            <div className="mb-5 flex rounded-full bg-pink-light p-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setMethod("password");
+                  setError(null);
+                }}
+                className={`flex-1 rounded-full border-0 py-2.5 text-sm font-semibold ${method === "password" ? "bg-white text-pink shadow-sm" : "bg-transparent text-muted"}`}
+              >
+                Password
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMethod("otp");
+                  setError(null);
+                  setOtpSent(false);
+                  setOtpCode("");
+                }}
+                className={`flex-1 rounded-full border-0 py-2.5 text-sm font-semibold ${method === "otp" ? "bg-white text-pink shadow-sm" : "bg-transparent text-muted"}`}
+              >
+                Email code
+              </button>
+            </div>
+          ) : null}
 
-          <Button fullWidth className="mt-5" onClick={proceed} disabled={loading}>
-            {loading ? "Please wait…" : isSignup ? "Create account" : "Log in"}
-          </Button>
+          {method === "password" ? (
+            <>
+              <div className="flex flex-col gap-3.5">
+                {isSignup ? (
+                  <Input
+                    label="First name"
+                    placeholder="First name"
+                    value={state.auth.name}
+                    onChange={(e) => setAuth({ name: e.target.value })}
+                  />
+                ) : null}
+                <Input
+                  label="Email"
+                  placeholder="Email"
+                  inputMode="email"
+                  autoComplete="email"
+                  value={state.auth.email}
+                  onChange={(e) => setAuth({ email: e.target.value })}
+                />
+                <Input
+                  label="Password"
+                  placeholder="Password"
+                  type="password"
+                  autoComplete={isSignup ? "new-password" : "current-password"}
+                  value={state.auth.password}
+                  onChange={(e) => setAuth({ password: e.target.value })}
+                />
+                {!isSignup ? (
+                  <Link href="/app/forgot-password" className="-mt-1 self-end text-[13px] font-medium text-muted no-underline">
+                    Forgot password?
+                  </Link>
+                ) : null}
+              </div>
+
+              <Button fullWidth className="mt-5" onClick={() => void proceedWithPassword()} disabled={loading}>
+                {loading ? "Please wait…" : isSignup ? "Create account" : "Log in"}
+              </Button>
+
+              <p className="mt-5 text-center text-sm text-muted">
+                {isSignup ? "Already have an account?" : "New to ArtBox?"}{" "}
+                <button
+                  type="button"
+                  onClick={() => setAuthMode(isSignup ? "login" : "signup")}
+                  className="border-0 bg-transparent p-0 text-sm font-semibold text-pink"
+                >
+                  {isSignup ? "Log in" : "Create one"}
+                </button>
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col gap-3.5">
+                <Input
+                  label="Email"
+                  placeholder="Email"
+                  inputMode="email"
+                  autoComplete="email"
+                  value={state.auth.email}
+                  onChange={(e) => setAuth({ email: e.target.value })}
+                />
+                {otpSent ? (
+                  <Input
+                    label="6-digit code"
+                    placeholder="123456"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  />
+                ) : null}
+              </div>
+
+              {devCodeHint ? (
+                <p className="mt-3 rounded-xl bg-pink-light px-4 py-3 text-sm text-pink">
+                  Dev mode — your code is <strong>{devCodeHint}</strong>
+                </p>
+              ) : null}
+
+              {!otpSent ? (
+                <Button fullWidth className="mt-5" onClick={() => void sendCode()} disabled={loading}>
+                  {loading ? "Sending…" : "Send sign-in code"}
+                </Button>
+              ) : (
+                <>
+                  <Button fullWidth className="mt-5" onClick={() => void proceedWithOtp()} disabled={loading || otpCode.length < 6}>
+                    {loading ? "Verifying…" : "Verify & sign in"}
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => void sendCode()}
+                    disabled={loading}
+                    className="mt-3 w-full border-0 bg-transparent text-sm font-semibold text-pink"
+                  >
+                    Resend code
+                  </button>
+                </>
+              )}
+            </>
+          )}
+
           {error ? <p className="mt-3 text-center text-sm text-coral">{error}</p> : null}
-
-          <p className="mt-5 text-center text-sm text-muted">
-            {isSignup ? "Already have an account?" : "New to ArtBox?"}{" "}
-            <button
-              type="button"
-              onClick={() => setAuthMode(isSignup ? "login" : "signup")}
-              className="border-0 bg-transparent p-0 text-sm font-semibold text-pink"
-            >
-              {isSignup ? "Log in" : "Create one"}
-            </button>
-          </p>
         </div>
       </div>
     </MobileFrame>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-canvas" />}>
+      <LoginForm />
+    </Suspense>
   );
 }

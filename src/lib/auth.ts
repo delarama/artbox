@@ -4,10 +4,12 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import { verifyOtp } from "@/lib/auth-otp";
 import { prisma } from "@/lib/db";
 
 const providers: NextAuthConfig["providers"] = [
   Credentials({
+    id: "credentials",
     name: "Email",
     credentials: {
       email: { label: "Email", type: "email" },
@@ -23,6 +25,29 @@ const providers: NextAuthConfig["providers"] = [
 
       const valid = await bcrypt.compare(password, user.passwordHash);
       if (!valid) return null;
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        image: user.image,
+      };
+    },
+  }),
+  Credentials({
+    id: "otp",
+    name: "Email code",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      code: { label: "Code", type: "text" },
+    },
+    async authorize(credentials) {
+      const email = credentials?.email?.toString().toLowerCase().trim();
+      const code = credentials?.code?.toString().trim();
+      if (!email || !code) return null;
+
+      const user = await verifyOtp(email, code);
+      if (!user) return null;
 
       return {
         id: user.id,
@@ -56,14 +81,27 @@ if (process.env.APPLE_ID && process.env.APPLE_SECRET) {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/app/login",
   },
   providers,
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.id = user.id;
+    async jwt({ token, user, account }) {
+      if (user?.id) {
+        token.id = user.id;
+        return token;
+      }
+
+      if (account && token.email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email.toLowerCase() },
+          select: { id: true },
+        });
+        if (dbUser) token.id = dbUser.id;
+      }
+
       return token;
     },
     async session({ session, token }) {

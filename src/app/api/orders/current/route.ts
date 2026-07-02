@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
 import { generateOrderNo, orderToClientState } from "@/lib/order-serialization";
-import { defaultOrderState } from "@/lib/order-context";
+import { defaultOrderState } from "@/lib/defaults";
 
 export async function GET() {
   if (!isDatabaseConfigured()) {

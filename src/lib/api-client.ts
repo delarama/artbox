@@ -93,3 +93,32 @@ export async function resetPassword(token: string, password: string) {
     throw new Error(data.error ?? "Reset failed");
   }
 }
+
+export type AuthConfig = {
+  database: boolean;
+  credentials: boolean;
+  otp: boolean;
+  google: boolean;
+  apple: boolean;
+};
+
+export async function fetchAuthConfig() {
+  const res = await fetch("/api/auth/config", { cache: "no-store" });
+  if (!res.ok) {
+    return { database: false, credentials: false, otp: false, google: false, apple: false };
+  }
+  return res.json() as Promise<AuthConfig>;
+}
+
+export async function sendOtpCode(email: string) {
+  const res = await fetch("/api/auth/otp/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error ?? "Could not send sign-in code");
+  }
+  return data as { ok: true; mode: "dev" | "resend"; devCode?: string };
+}
