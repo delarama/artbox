@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendOrderConfirmationEmail } from "@/lib/email";
+import { isStripeEnabled } from "@/lib/env";
 import { getStripe } from "@/lib/stripe";
 
 export async function POST(request: Request) {
+  if (!isStripeEnabled() || !process.env.STRIPE_WEBHOOK_SECRET) {
+    return NextResponse.json({ error: "Stripe webhooks not configured" }, { status: 503 });
+  }
+
   const stripe = getStripe();
   const signature = request.headers.get("stripe-signature");
   if (!signature || !process.env.STRIPE_WEBHOOK_SECRET) {

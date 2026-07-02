@@ -131,17 +131,25 @@ export default function CheckoutPage() {
           </div>
 
           <div className="mb-3.5 text-base font-bold">Payment</div>
-          <div className="flex flex-col gap-3.5">
-            <Input placeholder="Card number" inputMode="numeric" className="tracking-wide" value={state.card.num} onChange={(e) => setCard({ num: e.target.value })} />
-            <div className="flex gap-3">
-              <Input placeholder="MM / YY" value={state.card.exp} onChange={(e) => setCard({ exp: e.target.value })} />
-              <Input placeholder="CVC" inputMode="numeric" className="w-[118px]" value={state.card.cvc} onChange={(e) => setCard({ cvc: e.target.value })} />
+          {productionMode ? (
+            <div className="rounded-xl border border-[#E4D8DC] bg-[#F9F6F7] px-4 py-4">
+              <p className="m-0 text-sm leading-relaxed text-body">
+                You&apos;ll be redirected to Stripe to pay securely. Card details are never stored on ArtBox servers.
+              </p>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col gap-3.5">
+              <Input placeholder="Card number" inputMode="numeric" className="tracking-wide" value={state.card.num} onChange={(e) => setCard({ num: e.target.value })} />
+              <div className="flex gap-3">
+                <Input placeholder="MM / YY" value={state.card.exp} onChange={(e) => setCard({ exp: e.target.value })} />
+                <Input placeholder="CVC" inputMode="numeric" className="w-[118px]" value={state.card.cvc} onChange={(e) => setCard({ cvc: e.target.value })} />
+              </div>
+            </div>
+          )}
           <div className="mt-3.5 flex items-center gap-2 text-xs text-muted">
             <span className="text-teal">🔒</span>
             {productionMode
-              ? "Payments are processed securely by Stripe. Card details are not stored on ArtBox servers."
+              ? "Payments are processed securely by Stripe."
               : "Encrypted & secure. This is a demo — no real charge."}
           </div>
         </div>
@@ -170,7 +178,7 @@ export default function CheckoutPage() {
               }
             }}
           >
-            {loading ? "Processing…" : `Place order · ${fmt(total)}`}
+            {loading ? "Processing…" : productionMode ? `Continue to payment · ${fmt(total)}` : `Place order · ${fmt(total)}`}
           </Button>
           {error ? <p className="mt-2 text-center text-sm text-coral">{error}</p> : null}
         </StickyFooter>
