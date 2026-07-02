@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { AppBackHeader } from "@/components/layout/AppBackHeader";
@@ -32,6 +32,8 @@ function AppleIcon() {
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/app/choose";
   const { state, setAuthMode, setAuth, completeAuth } = useOrder();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export default function LoginPage() {
         return;
       }
       completeAuth();
-      router.push("/app/choose");
+      router.push(callbackUrl);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
