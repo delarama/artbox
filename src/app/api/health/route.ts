@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isDatabaseConfigured } from "@/lib/db";
+import { getStorageMode } from "@/lib/env";
 
 export async function GET() {
   return NextResponse.json({
@@ -7,7 +8,7 @@ export async function GET() {
     database: isDatabaseConfigured(),
     stripe: Boolean(process.env.STRIPE_SECRET_KEY),
     email: Boolean(process.env.RESEND_API_KEY),
-    storage: Boolean(process.env.S3_BUCKET) ? "s3" : "local",
+    storage: getStorageMode(),
     timestamp: new Date().toISOString(),
   });
 }
