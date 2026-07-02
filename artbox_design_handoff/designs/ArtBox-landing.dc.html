@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #E8E8EA; font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  .ab-gallery::-webkit-scrollbar { height: 6px; }
+  .ab-gallery::-webkit-scrollbar-thumb { background: #e3b9c8; border-radius: 3px; }
+  .ab-gallery::-webkit-scrollbar-track { background: transparent; }
+</style>
+</helmet>
+
+<div style="max-width:440px;margin:0 auto;background:#ffffff;min-height:100vh;box-shadow:0 0 60px rgba(0,0,0,0.08);overflow:hidden;color:#2C2C2A;">
+
+  <!-- ===== NAV ===== -->
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:#1C1C2E;border-bottom:1px solid #1C1C2E;">
+    <span style="font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.02em;"><span style="color:#E24B4A;">A</span><span style="color:#EF9F27;">r</span><span style="color:#EF9F27;">t</span><span style="color:#1D9E75;">B</span><span style="color:#378ADD;">o</span><span style="color:#7F77DD;">x</span></span>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="#how" style="font-family:'Poppins',sans-serif;font-weight:500;font-size:14px;color:#C8C8D8;text-decoration:none;">How it works</a>
+      <a href="ArtBox%20App.dc.html#login" style="font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:#ffffff;background:#D4537E;text-decoration:none;padding:8px 18px;border-radius:50px;" style-hover="background:#993556;">Log in</a>
+    </div>
+  </nav>
+
+  <!-- ===== SECTION 1 · HERO ===== -->
+  <header style="padding:56px 24px 40px;background:#FFFFFF;text-align:center;">
+    <span style="display:inline-block;font-family:'Poppins',sans-serif;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#993556;background:#FBEAF0;padding:6px 14px;border-radius:50px;margin-bottom:20px;">Canadian keepsake studio</span>
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:34px;line-height:1.15;letter-spacing:-0.02em;margin:0 0 16px;color:#1C1C2E;">Their art.<br><span style="color:#D4537E;">Your forever.</span></h1>
+    <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:16px;line-height:1.6;margin:0 auto 28px;max-width:340px;color:#5F5E5A;">Send us your child's artwork. We photograph, curate, and turn it into a beautiful keepsake — a book or framed mosaic — delivered to your door.</p>
+    <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#D4537E;color:#ffffff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your ArtBox <span style="font-size:17px;">→</span></a>
+    <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:12px;color:#888780;margin:16px 0 0;">Made in Canada · Priced in CAD · Ships in 2–3 weeks</p>
+
+    <!-- lifestyle photo placeholder -->
+    <div style="margin-top:36px;position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:#FBEAF0;display:flex;align-items:center;justify-content:center;">
+      <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.04em;color:#888780;text-align:center;padding:0 24px;line-height:1.6;">[ LIFESTYLE PHOTO ]<br>parent holding open keepsake book<br>child's colourful art on the pages</span>
+    </div>
+  </header>
+
+  <!-- ===== SECTION 2 · HOW IT WORKS ===== -->
+  <section id="how" style="padding:64px 24px;background:#FFFFFF;">
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-0.02em;text-align:center;margin:0 0 40px;color:#1C1C2E;">Three steps to a<br>finished keepsake</h2>
+
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <!-- step 1 -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:#ffffff;border-radius:16px;padding:22px;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="flex-shrink:0;position:relative;width:52px;height:52px;border-radius:14px;background:#FBE7E6;display:flex;align-items:center;justify-content:center;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4v8l-9 4-9-4V8z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/></svg>
+        </div>
+        <div>
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:#E24B4A;letter-spacing:0.04em;">STEP 1</span>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;margin:2px 0 6px;color:#1C1C2E;">Order your ArtBox</h3>
+          <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.55;color:#615f5b;margin:0;">We ship an empty box to your door within 5–7 business days.</p>
+        </div>
+      </div>
+      <!-- step 2 -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:#ffffff;border-radius:16px;padding:22px;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="flex-shrink:0;position:relative;width:52px;height:52px;border-radius:14px;background:#EFEEFB;display:flex;align-items:center;justify-content:center;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4l5 5L9 20l-5 1 1-5L15 4z"/><path d="M13 6l5 5"/></svg>
+        </div>
+        <div>
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:#7F77DD;letter-spacing:0.04em;">STEP 2</span>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;margin:2px 0 6px;color:#1C1C2E;">Fill it and send it back</h3>
+          <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.55;color:#615f5b;margin:0;">Pack in up to 350 pieces of artwork. We include a prepaid return label.</p>
+        </div>
+      </div>
+      <!-- step 3 -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:#ffffff;border-radius:16px;padding:22px;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="flex-shrink:0;position:relative;width:52px;height:52px;border-radius:14px;background:#E2F4EC;display:flex;align-items:center;justify-content:center;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21.5 7.1 18.2l.9-5.5-4-3.9 5.5-.8z"/></svg>
+        </div>
+        <div>
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:#1D9E75;letter-spacing:0.04em;">STEP 3</span>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;margin:2px 0 6px;color:#1C1C2E;">Receive your keepsake</h3>
+          <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.55;color:#615f5b;margin:0;">We photograph every piece and craft your book or framed mosaic, then ship it back within 2–3 weeks.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:28px;">
+      <a href="#pricing" style="font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;color:#D4537E;text-decoration:none;" style-hover="text-decoration:underline;">See pricing ↓</a>
+    </div>
+  </section>
+
+  <!-- ===== SECTION · OUR PRODUCTS ===== -->
+  <section id="products" style="padding:64px 24px;background:#FFFFFF;">
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-0.02em;text-align:center;margin:0 0 8px;color:#1C1C2E;">One box, two<br>ways to keep it</h2>
+    <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:15px;line-height:1.6;text-align:center;color:#5F5E5A;margin:0 auto 36px;max-width:320px;">Fill your ArtBox, then turn it into whichever keepsake fits your home.</p>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+
+      <!-- PRODUCT · KEEPSAKE BOOK -->
+      <div style="background:#ffffff;border:1px solid #EEE6E8;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.05);">
+        <div style="background:#FBEAF0;padding:40px 24px 34px;display:flex;align-items:center;justify-content:center;">
+          <!-- book illustration -->
+          <div style="position:relative;width:180px;height:180px;">
+            <div style="position:absolute;left:14px;top:22px;width:150px;height:150px;background:#1D9E75;border-radius:4px 10px 10px 4px;transform:rotate(-8deg);box-shadow:0 8px 18px rgba(0,0,0,0.12);"></div>
+            <div style="position:absolute;left:8px;top:14px;width:150px;height:150px;background:#EF9F27;border-radius:4px 10px 10px 4px;transform:rotate(-3deg);box-shadow:0 8px 18px rgba(0,0,0,0.12);"></div>
+            <div style="position:absolute;left:20px;top:8px;width:150px;height:150px;background:#ffffff;border-radius:4px 12px 12px 4px;border-left:6px solid rgba(0,0,0,0.12);box-shadow:0 12px 26px rgba(0,0,0,0.16);overflow:hidden;display:flex;flex-direction:column;">
+              <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:12px;">
+                <div style="border-radius:3px;background:#E24B4A;"></div>
+                <div style="border-radius:3px;background:#378ADD;"></div>
+                <div style="border-radius:3px;background:#7F77DD;"></div>
+                <div style="border-radius:3px;background:#EF9F27;"></div>
+              </div>
+              <div style="padding:0 12px 12px;"><div style="height:12px;border-radius:2px;background:#1C1C2E;width:82%;"></div></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:26px 22px;">
+          <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#993556;background:#FBEAF0;padding:5px 12px;border-radius:50px;">Bestseller</span>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.01em;margin:14px 0 8px;color:#1C1C2E;">Keepsake Book</h3>
+          <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.6;color:#2C2C2A;margin:0 0 18px;">Publish your little artist in their very own hardcover book. We photograph every piece and lay it out into a vibrant book you'll page through for years.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>25–350 pieces in a single book</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Two sizes: 8"×8" or 11"×8.5"</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Lay-flat premium pages, custom cover &amp; captions</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Digital gallery access included</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:18px;"><span style="font-family:'Poppins',sans-serif;font-weight:400;font-size:13px;color:#888780;">From</span><span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;color:#1C1C2E;">$149</span><span style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#888780;">CAD</span></div>
+          <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#D4537E;color:#ffffff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#993556;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your book <span style="font-size:17px;">→</span></a>
+        </div>
+      </div>
+
+      <!-- PRODUCT · FRAMED MOSAIC -->
+      <div style="background:#ffffff;border:1px solid #EEE6E8;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.05);">
+        <div style="background:#FBEAF0;padding:40px 24px 34px;display:flex;align-items:center;justify-content:center;">
+          <!-- framed mosaic illustration -->
+          <div style="background:#ffffff;padding:16px;border-radius:3px;box-shadow:0 12px 28px rgba(0,0,0,0.16);border:1px solid #ECE3E7;">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:168px;">
+              <div style="aspect-ratio:1;border-radius:2px;background:#E24B4A;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#EF9F27;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#378ADD;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#7F77DD;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#1D9E75;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#D4537E;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#EF9F27;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#378ADD;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#7F77DD;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#1D9E75;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#E24B4A;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#EF9F27;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#378ADD;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#D4537E;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#1D9E75;"></div>
+              <div style="aspect-ratio:1;border-radius:2px;background:#7F77DD;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:26px 22px;">
+          <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#ffffff;background:#7F77DD;padding:5px 12px;border-radius:50px;">New</span>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.01em;margin:14px 0 8px;color:#1C1C2E;">Framed Mosaic</h3>
+          <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.6;color:#2C2C2A;margin:0 0 18px;">Put your child's masterpieces front and centre. We arrange the artwork from your ArtBox into a gallery-worthy mosaic, framed in solid wood and ready to hang.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Showcases 9 or 25 pieces, depending on size</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>14"×14" or 26"×26" solid-wood frame &amp; pro matting</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Every piece professionally photographed &amp; edited</span>
+            <span style="display:flex;gap:10px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.45;"><span style="color:#1D9E75;font-weight:700;flex-shrink:0;">✓</span>Digital gallery access included</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:18px;"><span style="font-family:'Poppins',sans-serif;font-weight:400;font-size:13px;color:#888780;">From</span><span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;color:#1C1C2E;">$149</span><span style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#888780;">CAD</span></div>
+          <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#D4537E;color:#ffffff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#993556;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your mosaic <span style="font-size:17px;">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3 · PRICING ===== -->
+  <section id="pricing" style="padding:64px 24px;background:#FBEAF0;">
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-0.02em;text-align:center;margin:0 0 10px;color:#1C1C2E;">Simple, honest pricing</h2>
+    <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:15px;line-height:1.6;text-align:center;color:#615f5b;margin:0 auto 32px;max-width:320px;">All prices in Canadian dollars. No surprise customs fees.</p>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <!-- Starter -->
+      <div style="background:#ffffff;border:1px solid #EEE6E8;border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,0.05);">
+        <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:#888780;">Starter</span>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:8px 0 4px;">
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:32px;color:#2C2C2A;">$149</span>
+          <span style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#888780;">CAD</span>
+        </div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#615f5b;margin:0 0 16px;">Up to 60 pieces</p>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Hardcover keepsake book</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Digital gallery</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Prepaid return shipping</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#888780;line-height:1.4;"><span style="color:#888780;font-weight:700;">+</span>Art return available ($25 add-on)</span>
+        </div>
+      </div>
+
+      <!-- Family · recommended -->
+      <div style="position:relative;background:#ffffff;border:2px solid #D4537E;border-radius:16px;padding:24px;box-shadow:0 8px 24px rgba(212,83,126,0.14);">
+        <span style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#7F77DD;color:#ffffff;font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;padding:5px 14px;border-radius:50px;white-space:nowrap;">Most popular</span>
+        <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:#D4537E;">Family</span>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:8px 0 4px;">
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:32px;color:#2C2C2A;">$249</span>
+          <span style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#888780;">CAD</span>
+        </div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#615f5b;margin:0 0 16px;">Up to 150 pieces</p>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Everything in Starter</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Lay-flat premium pages</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Priority processing</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>1 free digital download set</span>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div style="background:#ffffff;border:1px solid #EEE6E8;border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,0.05);">
+        <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:#888780;">Archive</span>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:8px 0 4px;">
+          <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:32px;color:#2C2C2A;">$399</span>
+          <span style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#888780;">CAD</span>
+        </div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#615f5b;margin:0 0 16px;">Up to 350 pieces</p>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Everything in Family</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>XL hardcover book</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Free art return included</span>
+          <span style="display:flex;gap:8px;align-items:flex-start;font-family:'Poppins',sans-serif;font-size:14px;color:#2C2C2A;line-height:1.4;"><span style="color:#1D9E75;font-weight:700;">✓</span>Dedicated account manager</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:24px;background:#D4537E;color:#ffffff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your ArtBox <span style="font-size:17px;">→</span></a>
+
+    <!-- FAQ: what counts as a piece -->
+    <div style="margin-top:20px;border-top:1px solid #F0E4E8;padding-top:16px;">
+      <button onClick="{{ togglePricing }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;padding:6px 0;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:#2C2C2A;text-align:left;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;border-radius:6px;">
+        What counts as a piece?
+        <span style="color:#1D9E75;font-size:18px;font-weight:700;flex-shrink:0;margin-left:12px;">{{ pricingChevron }}</span>
+      </button>
+      <sc-if value="{{ pricingOpen }}" hint-placeholder-val="{{ false }}">
+        <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.6;color:#615f5b;margin:8px 0 0;">Each side of a piece of artwork counts separately. So a drawing on both sides of a page counts as 2 pieces. Booklets and folded cards each count as 2.</p>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4 · GALLERY ===== -->
+  <section style="padding:64px 0;background:#FBEAF0;">
+    <div style="padding:0 24px;text-align:center;">
+      <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-0.02em;margin:0 0 8px;color:#2C2C2A;">Books parents<br>actually cry over</h2>
+      <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:15px;color:#888780;margin:0 0 28px;">(No pressure.)</p>
+    </div>
+
+    <div class="ab-gallery" style="display:flex;gap:16px;overflow-x:auto;padding:4px 24px 20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;">
+      <div style="flex-shrink:0;width:220px;scroll-snap-align:start;">
+        <div style="aspect-ratio:5/6;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(45deg,#F6D7E2 0px,#F6D7E2 12px,#fff 12px,#fff 24px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.08);"><span style="font-family:ui-monospace,monospace;font-size:10px;color:#B76A88;text-align:center;padding:0 16px;line-height:1.5;">[ OPEN BOOK ]<br>child's artwork</span></div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#2C2C2A;margin:12px 4px 0;">Lena's Grade 1 collection</p>
+      </div>
+      <div style="flex-shrink:0;width:220px;scroll-snap-align:start;">
+        <div style="aspect-ratio:5/6;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(45deg,#DBD8F5 0px,#DBD8F5 12px,#fff 12px,#fff 24px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.08);"><span style="font-family:ui-monospace,monospace;font-size:10px;color:#7A72CE;text-align:center;padding:0 16px;line-height:1.5;">[ OPEN BOOK ]<br>child's artwork</span></div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#2C2C2A;margin:12px 4px 0;">Noah's dinosaur phase</p>
+      </div>
+      <div style="flex-shrink:0;width:220px;scroll-snap-align:start;">
+        <div style="aspect-ratio:5/6;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(45deg,#C7EBDD 0px,#C7EBDD 12px,#fff 12px,#fff 24px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.08);"><span style="font-family:ui-monospace,monospace;font-size:10px;color:#1D9E75;text-align:center;padding:0 16px;line-height:1.5;">[ OPEN BOOK ]<br>child's artwork</span></div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#2C2C2A;margin:12px 4px 0;">Maya's rainbow period</p>
+      </div>
+      <div style="flex-shrink:0;width:220px;scroll-snap-align:start;">
+        <div style="aspect-ratio:5/6;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(45deg,#F6D7E2 0px,#F6D7E2 12px,#fff 12px,#fff 24px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.08);"><span style="font-family:ui-monospace,monospace;font-size:10px;color:#B76A88;text-align:center;padding:0 16px;line-height:1.5;">[ OPEN BOOK ]<br>child's artwork</span></div>
+        <p style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#2C2C2A;margin:12px 4px 0;">The everything-is-blue era</p>
+      </div>
+    </div>
+
+    <!-- review pull quote -->
+    <div style="padding:0 24px;margin-top:8px;">
+      <div style="background:#ffffff;border-radius:16px;padding:28px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:40px;line-height:0.5;color:#F0C2D2;display:block;height:20px;">“</span>
+        <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:16px;line-height:1.6;color:#2C2C2A;margin:0 0 14px;">I didn't expect to tear up opening it. Every single painting was there, from the chaotic scribbles to the ones I actually framed. It's the best thing I've ever spent money on.</p>
+        <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#D4537E;">— Sarah M., Toronto</span>
+      </div>
+      <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:24px;background:#D4537E;color:#ffffff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your ArtBox <span style="font-size:17px;">→</span></a>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 5 · FAQ ===== -->
+  <section style="padding:64px 24px;background:#ffffff;">
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-0.02em;text-align:center;margin:0 0 32px;color:#1C1C2E;">Questions, answered</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
+        <div style="border:1px solid #EEE6E8;border-radius:16px;overflow:hidden;background:#ffffff;">
+          <button onClick="{{ faq.onToggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;background:none;border:none;padding:18px 20px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;color:#2C2C2A;text-align:left;line-height:1.4;" style-focus="outline:3px solid #7F77DD;outline-offset:-2px;">
+            {{ faq.q }}
+            <span style="flex-shrink:0;color:#1D9E75;font-size:20px;font-weight:700;width:20px;text-align:center;">{{ faq.chevron }}</span>
+          </button>
+          <sc-if value="{{ faq.isOpen }}" hint-placeholder-val="{{ false }}">
+            <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:14px;line-height:1.6;color:#615f5b;margin:0;padding:0 20px 20px;">{{ faq.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 6 · ORDER CTA + FOOTER ===== -->
+  <section id="order" style="padding:64px 24px 40px;background:#1C1C2E;text-align:center;">
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;line-height:1.2;letter-spacing:-0.02em;color:#ffffff;margin:0 0 14px;">Ready to turn that pile into a book?</h2>
+    <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:16px;line-height:1.6;color:#C8C8D8;margin:0 auto 28px;max-width:320px;">Start your ArtBox today. We'll take it from here.</p>
+    <a href="ArtBox%20App.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#ffffff;color:#D4537E;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;text-decoration:none;box-sizing:border-box;padding:0 16px;" style-hover="background:#FBEAF0;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Start your ArtBox <span style="font-size:17px;">→</span></a>
+
+    <div style="margin-top:48px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.28);display:flex;flex-direction:column;gap:14px;align-items:center;">
+      <span style="font-family:'Poppins',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.02em;"><span style="color:#E24B4A;">A</span><span style="color:#EF9F27;">r</span><span style="color:#EF9F27;">t</span><span style="color:#1D9E75;">B</span><span style="color:#378ADD;">o</span><span style="color:#7F77DD;">x</span></span>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:center;">
+        <a href="mailto:hello@artbox.ca" style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#C8C8D8;text-decoration:none;">hello@artbox.ca</a>
+        <span style="color:rgba(255,255,255,0.4);">·</span>
+        <a href="#" style="font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:#C8C8D8;text-decoration:none;">Français</a>
+      </div>
+      <span style="font-family:'Poppins',sans-serif;font-weight:400;font-size:12px;color:rgba(255,255,255,0.7);">© 2026 ArtBox Canada Inc.</span>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { openFaq: 0, pricingOpen: false };
+
+  renderVals() {
+    const data = [
+      { q: 'Do you ship across Canada?', a: 'Yes — we ship the ArtBox to all Canadian provinces and territories, and return your finished book the same way. No cross-border surprises.' },
+      { q: 'What if my child\u2019s artwork is very large or oddly shaped?', a: 'We handle it. Artwork up to 18" \u00d7 24" fits in the box. For anything bigger, email us at hello@artbox.ca and we\u2019ll sort it out.' },
+      { q: 'Can I get my original artwork back?', a: 'Yes. Add Art Return to your order for $25 CAD and we\u2019ll carefully pack and return every original piece along with your book.' },
+      { q: 'How long does the whole process take?', a: 'From the day you mail your box back to us, expect your finished book in 2\u20133 weeks. Total from order to book: about 4\u20135 weeks.' },
+      { q: 'Is ArtBox available in French?', a: 'Oui! Our full website, customer service, and book design options are available in French. Just switch to Fran\u00e7ais in the top menu.' },
+    ];
+    const faqs = data.map((f, i) => ({
+      q: f.q,
+      a: f.a,
+      isOpen: this.state.openFaq === i,
+      chevron: this.state.openFaq === i ? '\u2212' : '+',
+      onToggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? null : i })),
+    }));
+    return {
+      faqs,
+      pricingOpen: this.state.pricingOpen,
+      pricingChevron: this.state.pricingOpen ? '\u2212' : '+',
+      togglePricing: () => this.setState(s => ({ pricingOpen: !s.pricingOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>

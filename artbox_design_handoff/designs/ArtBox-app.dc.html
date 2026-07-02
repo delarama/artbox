@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #E8E8EA; font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  input, select, textarea, button { font-family: 'Poppins', sans-serif; }
+  .ab-scroll::-webkit-scrollbar { height: 6px; }
+  .ab-scroll::-webkit-scrollbar-thumb { background: #e3b9c8; border-radius: 3px; }
+  .ab-scroll::-webkit-scrollbar-track { background: transparent; }
+  @keyframes ab-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,83,126,0.35); } 50% { box-shadow: 0 0 0 7px rgba(212,83,126,0); } }
+  @keyframes ab-pop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+</style>
+</helmet>
+
+<div style="max-width:440px;margin:0 auto;background:#ffffff;min-height:100vh;box-shadow:0 0 60px rgba(0,0,0,0.08);color:#2C2C2A;position:relative;display:flex;flex-direction:column;">
+
+  <!-- ================= AUTH ================= -->
+  <sc-if value="{{ screenAuth }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #F3E3E8;">
+        <a href="ArtBox.dc.html" style="width:34px;height:34px;border-radius:50%;background:#FBEAF0;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#D4537E;font-size:18px;flex-shrink:0;">←</a>
+        <span style="font-family:'Poppins';font-weight:800;font-size:18px;letter-spacing:-0.02em;"><span style="color:#E24B4A;">A</span><span style="color:#EF9F27;">r</span><span style="color:#EF9F27;">t</span><span style="color:#1D9E75;">B</span><span style="color:#378ADD;">o</span><span style="color:#7F77DD;">x</span></span>
+      </div>
+      <div style="flex:1;padding:36px 24px 24px;display:flex;flex-direction:column;">
+        <h1 style="font-family:'Poppins';font-weight:700;font-size:26px;letter-spacing:-0.02em;margin:0 0 6px;color:#1C1C2E;">{{ authTitle }}</h1>
+        <p style="font-family:'Poppins';font-weight:400;font-size:15px;color:#5F5E5A;margin:0 0 26px;line-height:1.55;">{{ authSubtitle }}</p>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:22px;">
+          <button onClick="{{ socialAuth }}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;background:#fff;border:1px solid #E4D8DC;border-radius:50px;font-weight:600;font-size:14px;color:#2C2C2A;cursor:pointer;" style-hover="background:#FAF7F8;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.2c-.3 1.4-1.1 2.6-2.3 3.4v2.8h3.7C21.8 18.7 23 15.8 23 12.3z"/><path fill="#34A853" d="M12 24c3.1 0 5.7-1 7.6-2.8l-3.7-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.8H1.8v2.9C3.7 21.4 7.6 24 12 24z"/><path fill="#FBBC05" d="M5.6 14.7c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7.4H1.8C1 8.8.6 10.4.6 12.5s.4 3.7 1.2 5.1l3.8-2.9z"/><path fill="#EA4335" d="M12 5.4c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.8 15.1.8 12 .8 7.6.8 3.7 3.4 1.8 7.4l3.8 2.9C6.5 7.4 9 5.4 12 5.4z"/></svg> Continue with Google</button>
+          <button onClick="{{ socialAuth }}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;background:#fff;border:1px solid #E4D8DC;border-radius:50px;font-weight:600;font-size:14px;color:#2C2C2A;cursor:pointer;" style-hover="background:#FAF7F8;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="#1C1C2E"><path d="M17.05 12.5c0-2 1.6-3 1.7-3.05-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.4 2 2.4 2 1 0 1.3-.6 2.5-.6s1.5.6 2.5.6 1.7-1 2.3-1.9c.7-1.1 1-2.1 1-2.2 0-.1-2-.8-2-3zm-2-5.5c.5-.7.9-1.6.8-2.5-.8 0-1.8.5-2.4 1.2-.5.6-1 1.5-.8 2.4.9.1 1.8-.4 2.4-1.1z"/></svg> Continue with Apple</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;"><span style="flex:1;height:1px;background:#EEE6E8;"></span><span style="font-family:'Poppins';font-weight:500;font-size:12px;color:#B0A6A9;">or</span><span style="flex:1;height:1px;background:#EEE6E8;"></span></div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+            <input value="{{ auth.name }}" onChange="{{ onAuthName }}" placeholder="First name" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          </sc-if>
+          <input value="{{ auth.email }}" onChange="{{ onAuthEmail }}" placeholder="Email" inputmode="email" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <input value="{{ auth.password }}" onChange="{{ onAuthPassword }}" type="password" placeholder="Password" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+            <a href="#" style="align-self:flex-end;font-family:'Poppins';font-weight:500;font-size:13px;color:#888780;text-decoration:none;margin-top:-4px;">Forgot password?</a>
+          </sc-if>
+        </div>
+
+        <button onClick="{{ submitAuth }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:22px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#993556;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">{{ authCta }}</button>
+
+        <div style="text-align:center;margin-top:22px;font-family:'Poppins';font-weight:400;font-size:14px;color:#888780;">{{ authToggleText }} <button onClick="{{ toggleAuthMode }}" style="background:none;border:none;cursor:pointer;font-family:'Poppins';font-weight:600;font-size:14px;color:#D4537E;padding:0;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;border-radius:4px;">{{ authToggleCta }}</button></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= CHOOSE ROUTE ================= -->
+  <sc-if value="{{ screenChoose }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #F3E3E8;">
+        <a href="ArtBox.dc.html" style="width:34px;height:34px;border-radius:50%;background:#FBEAF0;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#D4537E;font-size:18px;flex-shrink:0;">←</a>
+        <span style="font-family:'Poppins';font-weight:800;font-size:18px;letter-spacing:-0.02em;"><span style="color:#E24B4A;">A</span><span style="color:#EF9F27;">r</span><span style="color:#EF9F27;">t</span><span style="color:#1D9E75;">B</span><span style="color:#378ADD;">o</span><span style="color:#7F77DD;">x</span></span>
+      </div>
+      <div style="flex:1;padding:36px 22px 24px;">
+        <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;letter-spacing:-0.02em;line-height:1.15;margin:0 0 8px;">How do you want to<br>make your book?</h1>
+        <p style="font-family:'Poppins';font-weight:400;font-size:15px;color:#615f5b;margin:0 0 30px;line-height:1.55;">Two ways to get the same beautiful keepsake — pick whichever fits your pile.</p>
+
+        <button onClick="{{ chooseMail }}" style="display:block;width:100%;text-align:left;background:#fff;border:2px solid #EEE6E8;border-radius:18px;padding:22px;margin-bottom:16px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.05);" style-hover="border-color:#D4537E;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+            <span style="width:52px;height:52px;border-radius:14px;background:#FBEAF0;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D4537E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4v8l-9 4-9-4V8z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/></svg></span>
+            <div><div style="font-family:'Poppins';font-weight:700;font-size:17px;">Send us the originals</div><span style="display:inline-block;font-family:'Poppins';font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#1D9E75;background:#E2F4EC;padding:3px 9px;border-radius:50px;margin-top:5px;">Most hands-off</span></div>
+          </div>
+          <p style="font-family:'Poppins';font-weight:400;font-size:13px;color:#615f5b;line-height:1.55;margin:0;">We mail you a box. Fill it with artwork, send it back, and we photograph every piece and design the book for you.</p>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-family:'Poppins';font-weight:600;font-size:13px;color:#D4537E;margin-top:14px;">Order a box · from $29 →</span>
+        </button>
+
+        <button onClick="{{ chooseDiy }}" style="display:block;width:100%;text-align:left;background:#fff;border:2px solid #EEE6E8;border-radius:18px;padding:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.05);" style-hover="border-color:#7F77DD;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+            <span style="width:52px;height:52px;border-radius:14px;background:#EFEEFB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg></span>
+            <div><div style="font-family:'Poppins';font-weight:700;font-size:17px;">Upload your own photos</div><span style="display:inline-block;font-family:'Poppins';font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#7F77DD;background:#EFEEFB;padding:3px 9px;border-radius:50px;margin-top:5px;">Fastest</span></div>
+          </div>
+          <p style="font-family:'Poppins';font-weight:400;font-size:13px;color:#615f5b;line-height:1.55;margin:0;">Already snapped the art on your phone? Upload your photos, we lay them out into a book, and it ships to your door.</p>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-family:'Poppins';font-weight:600;font-size:13px;color:#7F77DD;margin-top:14px;">Start uploading →</span>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= MAIL · ORDER DETAILS ================= -->
+  <sc-if value="{{ screenDetails }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #F3E3E8;">
+        <button onClick="{{ goChoose }}" style="width:34px;height:34px;border-radius:50%;background:#FBEAF0;border:none;cursor:pointer;color:#D4537E;font-size:18px;flex-shrink:0;">←</button>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:#D4537E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#D4537E;">Order details</span></span>
+          <span style="width:22px;height:2px;background:#EAD3DB;"></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:#F0E1E7;color:#B99AA4;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#B99AA4;">Shipping</span></span>
+        </div>
+      </div>
+
+      <div style="flex:1;padding:24px 20px 24px;">
+        <div style="background:#fff;border:1px solid #EEE6E8;border-radius:18px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,0.05);margin-bottom:26px;">
+          <div style="border-radius:12px;overflow:hidden;aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E9D3B8 0px,#E9D3B8 14px,#F1E2CE 14px,#F1E2CE 28px);display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><span style="font-family:ui-monospace,monospace;font-size:11px;color:#9A7B52;text-align:center;line-height:1.6;">[ ARTBOX PHOTO ]<br>open kraft box filled with kids' art</span></div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+            <div><h1 style="font-family:'Poppins';font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 4px;">The ArtBox</h1><p style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;margin:0;">Everything you need to send in your art.</p></div>
+            <div style="text-align:right;flex-shrink:0;"><div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;"><span style="font-family:'Poppins';font-weight:700;font-size:22px;color:#2C2C2A;">$29</span><span style="font-family:'Poppins';font-weight:600;font-size:10px;color:#fff;background:#D4537E;padding:2px 7px;border-radius:5px;">$10 OFF</span></div><span style="font-family:'Poppins';font-weight:500;font-size:12px;color:#B0A6A9;text-decoration:line-through;">$39 CAD</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
+            <span style="display:flex;gap:9px;align-items:flex-start;font-family:'Poppins';font-size:13px;color:#3d3c3a;line-height:1.5;"><span style="color:#1D9E75;font-weight:700;">✓</span>24"×17"×4" crush-proof box · holds 300–400 pieces</span>
+            <span style="display:flex;gap:9px;align-items:flex-start;font-family:'Poppins';font-size:13px;color:#3d3c3a;line-height:1.5;"><span style="color:#1D9E75;font-weight:700;">✓</span>Resealable art-protection bag inside</span>
+            <span style="display:flex;gap:9px;align-items:flex-start;font-family:'Poppins';font-size:13px;color:#3d3c3a;line-height:1.5;"><span style="color:#1D9E75;font-weight:700;">✓</span>Prepaid Canadian return label — no cross-border fees</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #F3E9EC;">
+            <span style="font-family:'Poppins';font-weight:500;font-size:13px;color:#888780;">Quantity</span>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <button onClick="{{ decQty }}" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #E4D2D8;background:#fff;color:#D4537E;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">−</button>
+              <span style="font-family:'Poppins';font-weight:700;font-size:17px;min-width:20px;text-align:center;">{{ qty }}</span>
+              <button onClick="{{ incQty }}" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #E4D2D8;background:#fff;color:#D4537E;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">+</button>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:#FBEAF0;border-radius:10px;padding:11px 13px;display:flex;gap:9px;"><span style="color:#D4537E;flex-shrink:0;">ⓘ</span><span style="font-family:'Poppins';font-weight:400;font-size:12px;color:#8a5568;line-height:1.5;">Digitization &amp; your keepsake book are billed <strong>later</strong> — priced by how many pieces you actually send in. Nothing else to decide now; our team designs the book for you.</span></div>
+        </div>
+
+        <h2 style="font-family:'Poppins';font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:0 0 12px;">Do you want your artwork back?</h2>
+        <button onClick="{{ toggleReturn }}" style="{{ returnCardStyle }}" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+          <span style="{{ returnCheckStyle }}">{{ returnCheck }}</span>
+          <span style="flex:1;text-align:left;"><span style="font-family:'Poppins';font-weight:600;font-size:14px;color:#2C2C2A;">Return my artwork</span><span style="display:block;font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;margin-top:2px;">We carefully pack &amp; mail every original piece back.</span></span>
+          <span style="font-family:'Poppins';font-weight:600;font-size:13px;color:{{ returnPriceColor }};white-space:nowrap;">+ $19.99</span>
+        </button>
+
+        <h2 style="font-family:'Poppins';font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:28px 0 12px;">Recommended upgrades</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ upgrades }}" as="up" hint-placeholder-count="4">
+            <button onClick="{{ up.onToggle }}" style="{{ up.cardStyle }}" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+              <span style="{{ up.checkStyle }}">{{ up.check }}</span>
+              <span style="flex:1;text-align:left;"><span style="font-family:'Poppins';font-weight:600;font-size:14px;color:#2C2C2A;">{{ up.name }}</span><span style="display:block;font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;margin-top:2px;line-height:1.5;">{{ up.desc }}</span></span>
+              <span style="font-family:'Poppins';font-weight:600;font-size:13px;color:{{ up.priceColor }};white-space:nowrap;">{{ up.priceLabel }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <h2 style="font-family:'Poppins';font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:28px 0 12px;">Processing time</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ speeds }}" as="sp" hint-placeholder-count="3">
+            <button onClick="{{ sp.onSelect }}" style="{{ sp.cardStyle }}" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+              <span style="{{ sp.radioStyle }}"><span style="{{ sp.dotStyle }}"></span></span>
+              <span style="flex:1;text-align:left;"><span style="font-family:'Poppins';font-weight:600;font-size:14px;color:#2C2C2A;">{{ sp.name }}</span><span style="display:block;font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;margin-top:2px;">{{ sp.desc }}</span></span>
+              <span style="font-family:'Poppins';font-weight:600;font-size:13px;color:{{ sp.priceColor }};white-space:nowrap;">{{ sp.priceLabel }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="position:sticky;bottom:0;padding:14px 20px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-top:1px solid #F3E3E8;display:flex;align-items:center;gap:14px;">
+        <div style="flex-shrink:0;"><div style="font-family:'Poppins';font-weight:500;font-size:11px;color:#888780;">Due today</div><div style="font-family:'Poppins';font-weight:700;font-size:18px;color:#2C2C2A;">{{ totalLabel }}</div></div>
+        <button onClick="{{ goBilling }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Continue <span style="font-size:17px;">→</span></button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= DIY · UPLOAD GALLERY ================= -->
+  <sc-if value="{{ screenGallery }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <input type="file" ref="{{ fileRef }}" onChange="{{ onFiles }}" accept="image/png,image/jpeg" multiple style="display:none;">
+      <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #F3E3E8;">
+        <button onClick="{{ goChoose }}" style="width:34px;height:34px;border-radius:50%;background:#EFEEFB;border:none;cursor:pointer;color:#7F77DD;font-size:18px;flex-shrink:0;">←</button>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:#7F77DD;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#7F77DD;">Photos</span></span>
+          <span style="width:22px;height:2px;background:#DED9F5;"></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:#EDEBF7;color:#A49FC9;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#A49FC9;">Book &amp; checkout</span></span>
+        </div>
+      </div>
+
+      <div style="flex:1;padding:24px 20px 24px;">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;"><h1 style="font-family:'Poppins';font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0;">Your gallery</h1><span style="font-family:'Poppins';font-weight:500;font-size:14px;color:#888780;">{{ photoCountLabel }}</span></div>
+        <p style="font-family:'Poppins';font-weight:400;font-size:14px;color:#615f5b;margin:0 0 22px;line-height:1.55;">Upload photos of your child's artwork. We recommend clear, well-lit shots — JPG or PNG.</p>
+
+        <div onClick="{{ openPicker }}" onDrop="{{ onDrop }}" onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" style="{{ dropzoneStyle }}">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M12 15V3"/><path d="M8 11l4 4 4-4"/><path d="M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg>
+          <div style="font-family:'Poppins';font-weight:700;font-size:16px;color:#2C2C2A;margin-bottom:6px;">Drag &amp; drop your photos here</div>
+          <div style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;margin-bottom:16px;">Accepted file types: JPG or PNG</div>
+          <span style="display:inline-flex;align-items:center;justify-content:center;padding:11px 24px;background:#7F77DD;color:#fff;border-radius:50px;font-weight:600;font-size:14px;">Browse files</span>
+        </div>
+
+        <sc-if value="{{ hasPhotos }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;">
+            <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="0">
+              <div style="position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#F3EEF0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                <div style="{{ ph.tileStyle }}"></div>
+                <button onClick="{{ ph.onRemove }}" title="Remove" style="position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;background:rgba(44,44,42,0.72);color:#fff;border:none;cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;" style-focus="outline:2px solid #fff;outline-offset:1px;">×</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="position:sticky;bottom:0;padding:14px 20px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-top:1px solid #F3E3E8;display:flex;align-items:center;gap:14px;">
+        <div style="flex-shrink:0;"><div style="font-family:'Poppins';font-weight:500;font-size:11px;color:#888780;">Uploaded</div><div style="font-family:'Poppins';font-weight:700;font-size:18px;color:#2C2C2A;">{{ photoCount }}</div></div>
+        <button onClick="{{ createBook }}" disabled="{{ noPhotos }}" style="{{ createBtnStyle }}" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Create book <span style="font-size:17px;">→</span></button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= SHIPPING & BILLING ================= -->
+  <sc-if value="{{ screenBilling }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #F3E3E8;">
+        <button onClick="{{ goBack }}" style="width:34px;height:34px;border-radius:50%;background:{{ accentSoft }};border:none;cursor:pointer;color:{{ accent }};font-size:18px;flex-shrink:0;">←</button>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:#1D9E75;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">✓</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#1D9E75;">{{ step1Label }}</span></span>
+          <span style="width:22px;height:2px;background:{{ accent }};"></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:24px;height:24px;border-radius:50%;background:{{ accent }};color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:{{ accent }};">{{ step2Label }}</span></span>
+        </div>
+      </div>
+
+      <div style="flex:1;padding:24px 20px 24px;">
+        <!-- DIY book format -->
+        <sc-if value="{{ isDiy }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:26px;">
+            <div style="font-family:'Poppins';font-weight:700;font-size:16px;margin-bottom:6px;">Choose your book</div>
+            <p style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;margin:0 0 14px;line-height:1.5;">We'll lay out your {{ photoCount }} photos into this book.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ formats }}" as="fm" hint-placeholder-count="3">
+                <button onClick="{{ fm.onSelect }}" style="{{ fm.cardStyle }}" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">
+                  <span style="{{ fm.radioStyle }}"><span style="{{ fm.dotStyle }}"></span></span>
+                  <span style="flex:1;text-align:left;"><span style="font-family:'Poppins';font-weight:600;font-size:14px;color:#2C2C2A;">{{ fm.name }}</span><span style="display:block;font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;margin-top:2px;">{{ fm.desc }}</span></span>
+                  <span style="font-family:'Poppins';font-weight:600;font-size:14px;color:{{ fm.priceColor }};white-space:nowrap;">{{ fm.priceLabel }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background:{{ accentSoft }};border-radius:16px;padding:18px 18px;margin-bottom:24px;">
+          <div style="font-family:'Poppins';font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#888780;margin-bottom:14px;">Order summary</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ lineItems }}" as="li" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;gap:12px;font-family:'Poppins';font-size:14px;"><span style="color:{{ li.color }};">{{ li.label }}</span><span style="color:{{ li.color }};font-weight:500;white-space:nowrap;">{{ li.amount }}</span></div>
+            </sc-for>
+          </div>
+          <div style="height:1px;background:#EAC9D6;margin:14px 0;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:'Poppins';font-weight:700;font-size:16px;">Due today</span><span style="font-family:'Poppins';font-weight:700;font-size:20px;color:{{ accent }};">{{ totalLabel }}</span></div>
+          <div style="font-family:'Poppins';font-weight:400;font-size:11px;color:#a58394;margin-top:8px;line-height:1.5;">{{ summaryNote }}</div>
+        </div>
+
+        <div style="font-family:'Poppins';font-weight:700;font-size:16px;margin-bottom:14px;">Contact information</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:26px;">
+          <div style="display:flex;gap:12px;">
+            <input value="{{ ship.first }}" onChange="{{ onFirst }}" placeholder="First name" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+            <input value="{{ ship.last }}" onChange="{{ onLast }}" placeholder="Last name" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          </div>
+          <input value="{{ ship.email }}" onChange="{{ onEmail }}" placeholder="Email" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <input value="{{ ship.phone }}" onChange="{{ onPhone }}" placeholder="Phone number" inputmode="tel" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+        </div>
+
+        <div style="font-family:'Poppins';font-weight:700;font-size:16px;margin-bottom:14px;">Shipping address</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:26px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;background:#F9F6F7;"><span style="font-family:'Poppins';font-weight:500;font-size:15px;color:#2C2C2A;">🇨🇦 Canada</span><span style="font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;margin-left:auto;">Canadian addresses only</span></div>
+          <input value="{{ ship.street }}" onChange="{{ onStreet }}" placeholder="Street address" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <div style="display:flex;gap:12px;">
+            <input value="{{ ship.city }}" onChange="{{ onCity }}" placeholder="City" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+            <input value="{{ ship.postal }}" onChange="{{ onPostal }}" placeholder="Postal" style="width:118px;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          </div>
+          <select value="{{ ship.prov }}" onChange="{{ onProv }}" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;background:#fff;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+            <option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option><option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NS">Nova Scotia</option><option value="NT">Northwest Territories</option><option value="NU">Nunavut</option><option value="ON">Ontario</option><option value="PE">Prince Edward Island</option><option value="QC">Quebec</option><option value="SK">Saskatchewan</option><option value="YT">Yukon</option>
+          </select>
+        </div>
+
+        <div style="font-family:'Poppins';font-weight:700;font-size:16px;margin-bottom:14px;">Promo or gift card</div>
+        <div style="display:flex;gap:10px;margin-bottom:26px;">
+          <input value="{{ promoCode }}" onChange="{{ onPromo }}" placeholder="Enter code" style="flex:1;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;text-transform:uppercase;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <button onClick="{{ applyPromo }}" style="padding:0 22px;background:{{ applyBg }};color:#fff;border:none;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">{{ applyLabel }}</button>
+        </div>
+
+        <div style="font-family:'Poppins';font-weight:700;font-size:16px;margin-bottom:14px;">Payment</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <input value="{{ card.num }}" onChange="{{ onCardNum }}" placeholder="Card number" inputmode="numeric" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;letter-spacing:0.04em;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          <div style="display:flex;gap:12px;">
+            <input value="{{ card.exp }}" onChange="{{ onCardExp }}" placeholder="MM / YY" style="width:100%;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+            <input value="{{ card.cvc }}" onChange="{{ onCardCvc }}" placeholder="CVC" inputmode="numeric" style="width:118px;padding:14px 16px;border:1px solid #E4D8DC;border-radius:12px;font-size:15px;color:#2C2C2A;outline:none;" style-focus="border-color:#D4537E;box-shadow:0 0 0 3px rgba(212,83,126,0.12);">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:14px;font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;"><span style="color:#1D9E75;">🔒</span> Encrypted &amp; secure. This is a demo — no real charge.</div>
+      </div>
+
+      <div style="position:sticky;bottom:0;padding:14px 20px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-top:1px solid #F3E3E8;">
+        <button onClick="{{ placeOrder }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">{{ placeOrderLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= CONFIRMATION ================= -->
+  <sc-if value="{{ screenConfirmation }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="flex:1;padding:60px 24px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:88px;height:88px;border-radius:50%;background:#E2F4EC;display:flex;align-items:center;justify-content:center;margin-bottom:24px;animation:ab-pop 0.5s ease-out;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h1 style="font-family:'Poppins';font-weight:700;font-size:28px;letter-spacing:-0.02em;margin:0 0 10px;">{{ confTitle }}</h1>
+        <p style="font-family:'Poppins';font-weight:400;font-size:16px;color:#615f5b;line-height:1.6;margin:0 0 8px;max-width:330px;">{{ confText }}</p>
+        <div style="font-family:'Poppins';font-weight:600;font-size:13px;color:#D4537E;background:#FBEAF0;padding:8px 16px;border-radius:50px;margin:16px 0 32px;">Order {{ orderNo }}</div>
+
+        <div style="width:100%;max-width:360px;background:#fff;border:1px solid #EEE6E8;border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,0.05);text-align:left;">
+          <div style="font-family:'Poppins';font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#888780;margin-bottom:16px;">What happens next</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <sc-for list="{{ nextSteps }}" as="ns" hint-placeholder-count="3">
+              <div style="display:flex;gap:14px;"><span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:{{ ns.bg }};color:{{ ns.fg }};font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;">{{ ns.n }}</span><div><div style="font-family:'Poppins';font-weight:600;font-size:14px;">{{ ns.title }}</div><div style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;line-height:1.45;">{{ ns.desc }}</div></div></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="position:sticky;bottom:0;padding:14px 20px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-top:1px solid #F3E3E8;">
+        <button onClick="{{ enterApp }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Track your order <span style="font-size:17px;">→</span></button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= APP SHELL ================= -->
+  <sc-if value="{{ screenApp }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;min-height:100vh;">
+      <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #F3E3E8;">
+        <span style="font-family:'Poppins';font-weight:800;font-size:20px;letter-spacing:-0.02em;"><span style="color:#E24B4A;">A</span><span style="color:#EF9F27;">r</span><span style="color:#EF9F27;">t</span><span style="color:#1D9E75;">B</span><span style="color:#378ADD;">o</span><span style="color:#7F77DD;">x</span></span>
+        <span style="font-family:'Poppins';font-weight:500;font-size:12px;color:#888780;">{{ orderNo }}</span>
+      </div>
+
+      <div style="flex:1;padding-bottom:84px;">
+
+        <!-- TAB: TRACK -->
+        <sc-if value="{{ tabTrack }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:20px 20px 24px;">
+            <button onClick="{{ goAccountTab }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;color:#888780;font-family:'Poppins';font-weight:600;font-size:13px;padding:0;margin-bottom:16px;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;border-radius:6px;"><span style="font-size:16px;">←</span> Account</button>
+            <h1 style="font-family:'Poppins';font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0 0 4px;">Order status</h1>
+            <p style="font-family:'Poppins';font-weight:400;font-size:14px;color:#888780;margin:0 0 28px;">{{ stageHeadline }}</p>
+            <div style="display:flex;flex-direction:column;">
+              <sc-for list="{{ stages }}" as="st" hint-placeholder-count="7">
+                <div style="display:flex;gap:16px;">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;"><span style="{{ st.dotStyle }}">{{ st.marker }}</span><span style="{{ st.lineStyle }}"></span></div>
+                  <div style="padding-bottom:22px;flex:1;">
+                    <div style="font-family:'Poppins';font-weight:600;font-size:15px;color:{{ st.labelColor }};">{{ st.label }}</div>
+                    <div style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;line-height:1.5;margin-top:2px;">{{ st.desc }}</div>
+                    <sc-if value="{{ st.showInvoice }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:12px;background:#FBEAF0;border-radius:12px;padding:14px;">
+                        <div style="display:flex;justify-content:space-between;font-family:'Poppins';font-size:13px;margin-bottom:6px;"><span style="color:#615f5b;">142 pieces · Family book</span><span style="font-weight:700;color:#2C2C2A;">$249.00</span></div>
+                        <div style="display:flex;justify-content:space-between;font-family:'Poppins';font-size:12px;color:#888780;margin-bottom:12px;"><span>Digitization (142 × $0.99)</span><span>included</span></div>
+                        <button onClick="{{ payInvoice }}" style="width:100%;min-height:44px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:14px;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Review &amp; pay book invoice</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ st.showProofCta }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ goBookTab }}" style="margin-top:10px;padding:10px 18px;background:#fff;border:1px solid #E9C6D3;border-radius:50px;font-weight:600;font-size:13px;color:#D4537E;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Review your proof →</button>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:8px;background:#F5F1F2;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;">
+              <div style="flex:1;font-family:'Poppins';font-weight:400;font-size:12px;color:#9a9691;line-height:1.4;">Demo control — walk the order forward to preview each stage.</div>
+              <button onClick="{{ advance }}" style="flex-shrink:0;padding:9px 15px;background:#fff;border:1px solid #E0D6DA;border-radius:50px;font-weight:600;font-size:13px;color:#888780;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Advance ▸</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- TAB: BOOK -->
+        <sc-if value="{{ tabBook }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px 20px 24px;">
+            <sc-if value="{{ bookPending }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center;padding:40px 0 8px;">
+                <div style="width:76px;height:76px;border-radius:50%;background:#FBEAF0;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#D4537E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.3-4.5-1.8-7-1v12c2.5-.8 5-.3 7 1 2-1.3 4.5-1.8 7-1V5c-2.5-.8-5-.3-7 1z"/><path d="M12 6v12"/></svg></div>
+                <h1 style="font-family:'Poppins';font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px;">Your proof isn't ready yet</h1>
+                <p style="font-family:'Poppins';font-weight:400;font-size:14px;color:#888780;line-height:1.6;margin:0 auto;max-width:300px;">{{ pendingText }}</p>
+                <div style="font-family:'Poppins';font-weight:500;font-size:13px;color:#D4537E;background:#FBEAF0;padding:8px 16px;border-radius:50px;display:inline-block;margin-top:20px;">Current status · {{ stageHeadline }}</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ bookReview }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <span style="display:inline-block;font-family:'Poppins';font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#1D9E75;background:#E2F4EC;padding:5px 12px;border-radius:50px;margin-bottom:14px;">Proof ready to review</span>
+                <h1 style="font-family:'Poppins';font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0 0 6px;">We designed your book</h1>
+                <p style="font-family:'Poppins';font-weight:400;font-size:14px;color:#615f5b;margin:0 0 24px;line-height:1.55;">{{ reviewText }}</p>
+
+                <div style="display:flex;justify-content:center;margin-bottom:24px;">
+                  <div style="width:220px;aspect-ratio:3/4;border-radius:6px 12px 12px 6px;background:#D4537E;box-shadow:0 12px 28px rgba(0,0,0,0.18);position:relative;overflow:hidden;padding:26px 22px;display:flex;flex-direction:column;justify-content:space-between;border-left:7px solid rgba(0,0,0,0.14);">
+                    <span style="font-family:'Poppins';font-weight:600;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.75);">ArtBox</span>
+                    <div>
+                      <div style="width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.22);margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:8px;color:rgba(255,255,255,0.8);text-align:center;">COVER<br>ART</div>
+                      <div style="font-family:'Poppins';font-weight:700;font-size:22px;line-height:1.15;color:#fff;">{{ bookTitle }}</div>
+                      <div style="font-family:'Poppins';font-weight:400;font-size:12px;color:rgba(255,255,255,0.8);margin-top:6px;">A keepsake collection · 2026</div>
+                    </div>
+                  </div>
+                </div>
+
+                <sc-if value="{{ proofHasPhotos }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-family:'Poppins';font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#888780;margin-bottom:10px;">From your uploads</div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;">
+                    <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="0">
+                      <div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#F3EEF0;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="{{ ph.tileStyle }}"></div></div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ proofNoPhotos }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-family:'Poppins';font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#888780;margin-bottom:10px;">Inside spreads · 32 pages</div>
+                  <div class="ab-scroll" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:12px;margin-bottom:20px;scroll-snap-type:x mandatory;">
+                    <sc-for list="{{ spreads }}" as="sp" hint-placeholder-count="5">
+                      <div style="flex-shrink:0;width:190px;aspect-ratio:3/2;border-radius:10px;background:{{ sp.bg }};display:flex;align-items:center;justify-content:center;scroll-snap-align:start;box-shadow:0 4px 14px rgba(0,0,0,0.08);"><span style="font-family:ui-monospace,monospace;font-size:10px;color:{{ sp.ink }};text-align:center;line-height:1.5;">[ SPREAD {{ sp.n }} ]<br>{{ sp.caption }}</span></div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div style="background:#F5F1F2;border-radius:12px;padding:13px 15px;font-family:'Poppins';font-weight:400;font-size:12px;color:#8a8681;line-height:1.5;">Want something moved or swapped? Tap <strong style="color:#D4537E;">Request a tweak</strong> and our team revises it free before print.</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ approved }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center;padding:32px 0 8px;">
+                <div style="width:80px;height:80px;border-radius:50%;background:#E2F4EC;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:ab-pop 0.5s ease-out;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <h1 style="font-family:'Poppins';font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0 0 8px;">Proof approved!</h1>
+                <p style="font-family:'Poppins';font-weight:400;font-size:15px;color:#615f5b;line-height:1.6;margin:0 auto 24px;max-width:300px;">"<strong style="color:#2C2C2A;">{{ bookTitle }}</strong>" is off to print. We'll ship it home in 2–3 weeks.</p>
+                <button onClick="{{ goTrackTab }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;background:#FBEAF0;color:#D4537E;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">See it on the tracker →</button>
+              </div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ bookReview }}" hint-placeholder-val="{{ true }}">
+            <div style="position:sticky;bottom:64px;padding:14px 20px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-top:1px solid #F3E3E8;display:flex;gap:12px;">
+              <button onClick="{{ requestTweak }}" style="flex-shrink:0;padding:0 18px;min-height:52px;background:#fff;border:1px solid #E9C6D3;border-radius:50px;font-weight:600;font-size:14px;color:#D4537E;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Request a tweak</button>
+              <button onClick="{{ approve }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Approve &amp; print</button>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <!-- TAB: ACCOUNT -->
+        <sc-if value="{{ tabAccount }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px 20px 24px;">
+            <h1 style="font-family:'Poppins';font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0 0 4px;">Hi there 👋</h1>
+            <p style="font-family:'Poppins';font-weight:400;font-size:14px;color:#888780;margin:0 0 24px;">Your ArtBox account</p>
+
+            <div style="background:#D4537E;border-radius:16px;padding:22px;color:#fff;margin-bottom:24px;box-shadow:0 8px 22px rgba(212,83,126,0.22);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-family:'Poppins';font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.85);">Current order</span><span style="font-family:'Poppins';font-weight:500;font-size:12px;color:rgba(255,255,255,0.85);">{{ orderNo }}</span></div>
+              <div style="font-family:'Poppins';font-weight:700;font-size:19px;margin-bottom:4px;">{{ currentOrderLabel }}</div>
+              <div style="font-family:'Poppins';font-weight:400;font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:16px;">{{ stageHeadline }}</div>
+              <button onClick="{{ goTrackTab }}" style="padding:10px 18px;background:#fff;color:#D4537E;border:none;border-radius:50px;font-weight:600;font-size:13px;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">View tracker →</button>
+            </div>
+
+            <button onClick="{{ startNewOrder }}" style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:52px;margin-bottom:24px;background:#D4537E;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(212,83,126,0.22);" style-hover="background:#bf436b;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;"><span style="font-size:19px;line-height:0;">＋</span> Create a new book</button>
+
+            <div style="display:flex;align-items:center;gap:14px;background:#FBEAF0;border-radius:14px;padding:16px 18px;margin-bottom:24px;">
+              <div style="flex-shrink:0;width:40px;height:40px;border-radius:10px;background:#EFEEFB;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M4 21h16"/></svg></div>
+              <div style="flex:1;"><div style="font-family:'Poppins';font-weight:600;font-size:14px;">Digital gallery</div><div style="font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;">Ready once your art is photographed.</div></div>
+              <span style="font-family:'Poppins';font-weight:600;font-size:12px;color:#B9A9AE;">Soon</span>
+            </div>
+
+            <div style="font-family:'Poppins';font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#888780;margin-bottom:14px;">Your books</div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
+              <sc-for list="{{ pastBooks }}" as="bk" hint-placeholder-count="2">
+                <div style="display:flex;gap:14px;align-items:center;background:#fff;border:1px solid #EEE6E8;border-radius:14px;padding:14px;box-shadow:0 4px 14px rgba(0,0,0,0.04);">
+                  <div style="flex-shrink:0;width:52px;height:64px;border-radius:4px 7px 7px 4px;background:{{ bk.color }};border-left:4px solid rgba(0,0,0,0.14);"></div>
+                  <div style="flex:1;"><div style="font-family:'Poppins';font-weight:600;font-size:15px;">{{ bk.title }}</div><div style="font-family:'Poppins';font-weight:400;font-size:12px;color:#888780;">{{ bk.meta }}</div></div>
+                  <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+                    <button style="padding:7px 14px;background:#FBEAF0;color:#D4537E;border:none;border-radius:50px;font-weight:600;font-size:12px;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Download</button>
+                    <button style="padding:7px 14px;background:#fff;color:#888780;border:1px solid #E4D8DC;border-radius:50px;font-weight:600;font-size:12px;cursor:pointer;" style-focus="outline:3px solid #7F77DD;outline-offset:2px;">Reorder</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border-top:1px solid #F0E4E8;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-bottom:1px solid #F6EDF0;"><span style="font-family:'Poppins';font-weight:500;font-size:14px;">Language</span><span style="font-family:'Poppins';font-weight:600;font-size:13px;color:#D4537E;">English · Français</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-bottom:1px solid #F6EDF0;"><span style="font-family:'Poppins';font-weight:500;font-size:14px;">Email</span><span style="font-family:'Poppins';font-weight:400;font-size:13px;color:#888780;">{{ emailDisplay }}</span></div>
+              <button onClick="{{ goAuth }}" style="width:100%;text-align:left;padding:16px 2px;background:none;border:none;border-bottom:1px solid #F6EDF0;cursor:pointer;font-family:'Poppins';font-weight:500;font-size:14px;color:#2C2C2A;" style-hover="color:#D4537E;">Sign out</button>
+              <button onClick="{{ reset }}" style="width:100%;text-align:left;padding:16px 2px;background:none;border:none;cursor:pointer;font-family:'Poppins';font-weight:500;font-size:14px;color:#888780;" style-hover="color:#D4537E;">Start a new demo order</button>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <!-- bottom tab bar -->
+      <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;display:flex;background:rgba(255,255,255,0.97);backdrop-filter:blur(10px);border-top:1px solid #F3E3E8;padding:8px 0 10px;">
+        <button onClick="{{ goBookTab }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:{{ bookColor }};position:relative;" style-focus="outline:3px solid #7F77DD;outline-offset:-3px;border-radius:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.3-4.5-1.8-7-1v12c2.5-.8 5-.3 7 1 2-1.3 4.5-1.8 7-1V5c-2.5-.8-5-.3-7 1z"/><path d="M12 6v12"/></svg>
+          <span style="font-family:'Poppins';font-weight:600;font-size:11px;">Book</span>
+          <span style="{{ bookBadgeStyle }}"></span>
+        </button>
+        <button onClick="{{ goAccountTab }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:{{ accountColor }};" style-focus="outline:3px solid #7F77DD;outline-offset:-3px;border-radius:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg>
+          <span style="font-family:'Poppins';font-weight:600;font-size:11px;">Account</span>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.fileRef = React.createRef();
+    this.defaults = {
+      screen: 'choose', tab: 'track', route: null,
+      authMode: 'login',
+      auth: { name: '', email: '', password: '' },
+      qty: 1,
+      returnArt: false,
+      up: { digitalPhotos: false, cloudStorage: false, oneTimeDownload: false, usbDrive: false },
+      speed: 'standard',
+      diyFormat: 'hard',
+      promoCode: 'ARTKIVE', promoApplied: true,
+      ship: { first: '', last: '', email: '', phone: '', street: '', city: '', prov: 'ON', postal: '' },
+      card: { num: '', exp: '', cvc: '' },
+      approved: false,
+      stageIndex: 1,
+      orderNo: 'AB-2026-4817',
+      dragActive: false,
+    };
+    const VALID = ['auth', 'choose', 'details', 'gallery', 'billing', 'confirmation', 'app'];
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('artbox-proto')); } catch (e) {}
+    const base = (saved && VALID.indexOf(saved.screen) !== -1 && saved.up && 'route' in saved) ? { ...this.defaults, ...saved } : { ...this.defaults };
+    base.photos = [];
+    base.dragActive = false;
+    if (!base.auth) { base.auth = { name: '', email: '', password: '' }; base.authMode = 'login'; }
+    try { if (typeof location !== 'undefined' && location.hash === '#login') { base.screen = 'auth'; } } catch (e) {}
+    this.state = base;
+  }
+
+  componentDidUpdate() {
+    try {
+      const { photos, dragActive, ...rest } = this.state;
+      localStorage.setItem('artbox-proto', JSON.stringify(rest));
+    } catch (e) {}
+  }
+
+  fmt(n) { return '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+  addFiles(fileList) {
+    const files = Array.from(fileList || []).filter(f => /image\/(png|jpe?g)/i.test(f.type)).slice(0, 30);
+    files.forEach((f) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        this.setState(st => ({ photos: [...st.photos, { id: Date.now() + '-' + Math.random().toString(36).slice(2), url: ev.target.result, name: f.name }] }));
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isDiy = s.route === 'diy';
+
+    // ---- mail: upgrades / speeds / totals ----
+    const UP = [
+      { key: 'digitalPhotos', name: 'Add 25 of your own digital photos', desc: 'Mix in your phone snaps alongside the scanned art.', price: 9.99 },
+      { key: 'cloudStorage', name: 'Cloud storage + book warranty', desc: 'Unlimited storage & downloads · free replacement of lost or damaged books.', price: 18.99 },
+      { key: 'oneTimeDownload', name: 'One-time download', desc: 'A single high-res download of your whole gallery.', price: 19.99 },
+      { key: 'usbDrive', name: 'USB drive', desc: 'Your full gallery shipped on a keepsake USB.', price: 24.99 },
+    ];
+    const upgrades = UP.map(u => {
+      const on = s.up[u.key];
+      return {
+        name: u.name, desc: u.desc,
+        priceLabel: on ? '+ $' + u.price.toFixed(2) : '$' + u.price.toFixed(2),
+        priceColor: on ? '#D4537E' : '#888780',
+        check: on ? '✓' : '',
+        checkStyle: 'flex-shrink:0;width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:' + (on ? '#D4537E' : 'transparent') + ';border:2px solid ' + (on ? '#D4537E' : '#DCCED3') + ';',
+        cardStyle: 'display:flex;align-items:center;gap:14px;width:100%;background:#fff;border:2px solid ' + (on ? '#D4537E' : '#EEE6E8') + ';border-radius:16px;padding:16px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.04);',
+        onToggle: () => this.setState(st => ({ up: { ...st.up, [u.key]: !st.up[u.key] } })),
+      };
+    });
+
+    const SPEEDS = [
+      { id: 'standard', name: 'Standard', desc: 'Completed in 6–8 weeks.', price: 0 },
+      { id: 'rush', name: 'Rush', desc: 'Completed in 4–5 weeks.', price: 19 },
+      { id: 'superRush', name: 'Super Rush', desc: 'Completed in 3 weeks.', price: 29 },
+    ];
+    const speeds = SPEEDS.map(sp => {
+      const sel = s.speed === sp.id;
+      return {
+        name: sp.name, desc: sp.desc,
+        priceLabel: sp.price === 0 ? 'FREE' : '+ $' + sp.price,
+        priceColor: sp.price === 0 ? '#1D9E75' : (sel ? '#D4537E' : '#888780'),
+        radioStyle: 'flex-shrink:0;width:22px;height:22px;border-radius:50%;border:2px solid ' + (sel ? '#D4537E' : '#DCCED3') + ';display:flex;align-items:center;justify-content:center;',
+        dotStyle: 'width:11px;height:11px;border-radius:50%;background:' + (sel ? '#D4537E' : 'transparent') + ';',
+        cardStyle: 'display:flex;align-items:center;gap:14px;width:100%;background:#fff;border:2px solid ' + (sel ? '#D4537E' : '#EEE6E8') + ';border-radius:16px;padding:16px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.04);',
+        onSelect: () => this.setState({ speed: sp.id }),
+      };
+    });
+
+    // ---- diy: book formats ----
+    const FORMATS = [
+      { id: 'soft', name: 'Softcover book', desc: 'Up to 40 pieces · 20 pages', price: 65 },
+      { id: 'hard', name: 'Hardcover book', desc: 'Up to 80 pieces · lay-flat pages', price: 99 },
+      { id: 'xl', name: 'XL Hardcover book', desc: 'Up to 150 pieces · premium', price: 159 },
+    ];
+    const formats = FORMATS.map(f => {
+      const sel = s.diyFormat === f.id;
+      return {
+        name: f.name, desc: f.desc, priceLabel: '$' + f.price,
+        priceColor: sel ? '#7F77DD' : '#888780',
+        radioStyle: 'flex-shrink:0;width:22px;height:22px;border-radius:50%;border:2px solid ' + (sel ? '#7F77DD' : '#DCCED3') + ';display:flex;align-items:center;justify-content:center;',
+        dotStyle: 'width:11px;height:11px;border-radius:50%;background:' + (sel ? '#7F77DD' : 'transparent') + ';',
+        cardStyle: 'display:flex;align-items:center;gap:14px;width:100%;background:#fff;border:2px solid ' + (sel ? '#7F77DD' : '#EEE6E8') + ';border-radius:16px;padding:16px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.04);',
+        onSelect: () => this.setState({ diyFormat: f.id }),
+      };
+    });
+
+    // ---- totals ----
+    let lineItems = [], subtotal = 0;
+    const PROMO = 10;
+    if (isDiy) {
+      const fmt = FORMATS.find(f => f.id === s.diyFormat) || FORMATS[1];
+      subtotal = fmt.price;
+      lineItems.push({ label: fmt.name + ' · ' + s.photos.length + ' pieces', amount: this.fmt(fmt.price), color: '#2C2C2A' });
+      if (s.promoApplied) { subtotal -= PROMO; lineItems.push({ label: 'Promo · ARTKIVE', amount: '− ' + this.fmt(PROMO), color: '#1D9E75' }); }
+    } else {
+      const boxLine = 39 * s.qty;
+      subtotal = boxLine;
+      lineItems.push({ label: 'The ArtBox × ' + s.qty, amount: this.fmt(boxLine), color: '#2C2C2A' });
+      if (s.promoApplied) { subtotal -= PROMO; lineItems.push({ label: 'Promo · ARTKIVE', amount: '− ' + this.fmt(PROMO), color: '#1D9E75' }); }
+      if (s.returnArt) { subtotal += 19.99; lineItems.push({ label: 'Return my artwork', amount: this.fmt(19.99), color: '#2C2C2A' }); }
+      UP.forEach(u => { if (s.up[u.key]) { subtotal += u.price; lineItems.push({ label: u.name, amount: this.fmt(u.price), color: '#2C2C2A' }); } });
+      const speedCost = (SPEEDS.find(x => x.id === s.speed) || SPEEDS[0]).price;
+      if (speedCost > 0) { subtotal += speedCost; lineItems.push({ label: (SPEEDS.find(x => x.id === s.speed).name) + ' processing', amount: this.fmt(speedCost), color: '#2C2C2A' }); }
+    }
+    const tax = Math.round(subtotal * 0.13 * 100) / 100;
+    const total = subtotal + tax;
+    lineItems.push({ label: 'HST (13%)', amount: this.fmt(tax), color: '#888780' });
+    lineItems.push({ label: 'Shipping', amount: 'Free', color: '#1D9E75' });
+
+    // detail-screen "due today" for mail
+    let mailSub = 39 * s.qty - (s.promoApplied ? PROMO : 0) + (s.returnArt ? 19.99 : 0);
+    UP.forEach(u => { if (s.up[u.key]) mailSub += u.price; });
+    mailSub += (SPEEDS.find(x => x.id === s.speed) || SPEEDS[0]).price;
+    const mailTotal = mailSub + Math.round(mailSub * 0.13 * 100) / 100;
+
+    // ---- tracking stages (route-aware) ----
+    let STAGES, proofIdx, invoiceIdx;
+    if (isDiy) {
+      STAGES = [
+        { label: 'Order placed', desc: 'Book + shipping paid. Thanks!' },
+        { label: 'Building your book', desc: 'We\u2019re laying out your uploaded photos into a designed book.' },
+        { label: 'Design & proof', desc: 'Your proof is ready — review & approve it in the app.', proof: true },
+        { label: 'Book shipped home', desc: 'Printed, bound & on its way — about 2 weeks.' },
+      ];
+      proofIdx = 2; invoiceIdx = -1;
+    } else {
+      STAGES = [
+        { label: 'Order placed', desc: 'Box + shipping paid. Thanks!' },
+        { label: 'ArtBox on its way', desc: 'Your empty box ships in 5–7 business days.' },
+        { label: 'Fill it & mail it back', desc: 'Pack your art, use the prepaid label inside.' },
+        { label: 'Art photographed', desc: 'We shot & edited every piece individually.' },
+        { label: 'Book invoice ready', desc: 'Digitization + your book, priced by pieces sent.', invoice: true },
+        { label: 'Design & proof', desc: 'Our team designed your book — approve the proof.', proof: true },
+        { label: 'Book shipped home', desc: 'On its way. About 2–3 weeks from mail-back to doorstep.' },
+      ];
+      proofIdx = 5; invoiceIdx = 4;
+    }
+    const advanceMax = STAGES.length - 1;
+    const stages = STAGES.map((st, i) => {
+      const done = i < s.stageIndex;
+      const current = i === s.stageIndex;
+      const last = i === STAGES.length - 1;
+      let dotStyle = 'width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;';
+      if (done) dotStyle += 'background:#1D9E75;color:#fff;';
+      else if (current) dotStyle += 'background:#D4537E;color:#fff;animation:ab-pulse 1.8s ease-out infinite;';
+      else dotStyle += 'background:#F3E3E8;color:#C6A9B2;';
+      return {
+        label: st.label, desc: st.desc,
+        marker: done ? '✓' : (current ? '●' : (i + 1) + ''),
+        dotStyle,
+        labelColor: (done || current) ? '#2C2C2A' : '#B1A6AB',
+        lineStyle: 'width:2px;flex:1;min-height:26px;background:' + (i < s.stageIndex ? '#1D9E75' : '#F0E1E7') + ';' + (last ? 'display:none;' : ''),
+        showInvoice: current && !!st.invoice,
+        showProofCta: current && !!st.proof && !s.approved,
+      };
+    });
+    const stageHeadline = STAGES[Math.min(s.stageIndex, STAGES.length - 1)].label;
+    const bookReady = s.stageIndex >= proofIdx;
+
+    const spreads = [
+      { n: '1', caption: 'age 4 · autumn', bg: '#FBEAF0', ink: '#B76A88' },
+      { n: '2', caption: 'the blue phase', bg: '#EFEEFB', ink: '#7A72CE' },
+      { n: '3', caption: 'family portrait', bg: '#E2F4EC', ink: '#1D9E75' },
+      { n: '4', caption: 'dinosaurs!', bg: '#FBEAF0', ink: '#B76A88' },
+      { n: '5', caption: 'rainbow days', bg: '#EFEEFB', ink: '#7A72CE' },
+    ];
+    const pastBooks = [
+      { title: 'Preschool Year', meta: '48 pieces · Delivered Mar 2025', color: '#7F77DD' },
+      { title: 'Summer Camp Collection', meta: '92 pieces · Delivered Sep 2025', color: '#1D9E75' },
+    ];
+
+    // confirmation content
+    const confTitle = isDiy ? 'Your book is in the works!' : 'Your box is on the way!';
+    const confText = isDiy
+      ? 'We emailed a receipt to ' + (s.ship.email || 'your email') + '. We\u2019re laying out your photos now — watch for your proof in the app.'
+      : 'We emailed a receipt and tracking to ' + (s.ship.email || 'your email') + '. Fill your ArtBox, mail it back, and we\u2019ll take it from there.';
+    const nextSteps = isDiy ? [
+      { n: '1', title: 'We build your book', desc: 'Our team lays out your uploaded photos into a designed book.', bg: '#FBEAF0', fg: '#D4537E' },
+      { n: '2', title: 'Approve your proof', desc: 'Review the proof in the app and approve when it\u2019s perfect.', bg: '#EFEEFB', fg: '#7F77DD' },
+      { n: '3', title: 'It ships to your door', desc: 'Printed, bound and mailed — about 2 weeks.', bg: '#E2F4EC', fg: '#1D9E75' },
+    ] : [
+      { n: '1', title: 'Fill it & mail it back', desc: 'Your box arrives in 5–7 days with a prepaid return label.', bg: '#FBEAF0', fg: '#D4537E' },
+      { n: '2', title: 'We photograph & price it', desc: 'Every piece is shot individually; your book is priced by count.', bg: '#EFEEFB', fg: '#7F77DD' },
+      { n: '3', title: 'Approve your proof', desc: 'Our team designs the book; you tap approve; it ships home.', bg: '#E2F4EC', fg: '#1D9E75' },
+    ];
+
+    const setShip = (f) => (e) => this.setState(st => ({ ship: { ...st.ship, [f]: e.target.value } }));
+    const setCard = (f) => (e) => this.setState(st => ({ card: { ...st.card, [f]: e.target.value } }));
+
+    const photos = s.photos.map(p => ({ url: p.url, name: p.name, tileStyle: 'position:absolute;inset:0;background-image:url("' + p.url + '");background-size:cover;background-position:center;', onRemove: () => this.setState(st => ({ photos: st.photos.filter(x => x.id !== p.id) })) }));
+    const noPhotos = s.photos.length === 0;
+
+    const isSignup = s.authMode === 'signup';
+    const clearHash = () => { try { if (location.hash) history.replaceState(null, '', location.pathname); } catch (e) {} };
+    const doAuth = () => { clearHash(); this.setState(st => ({ screen: 'choose', ship: { ...st.ship, first: st.auth.name || st.ship.first, email: st.auth.email || st.ship.email } })); };
+
+    return {
+      screenAuth: s.screen === 'auth',
+      isSignup, isLogin: !isSignup,
+      auth: s.auth,
+      authTitle: isSignup ? 'Create your account' : 'Welcome back',
+      authSubtitle: isSignup ? 'Save your gallery, track orders, and pick up right where you left off.' : 'Log in to track your order and manage your books.',
+      authCta: isSignup ? 'Create account' : 'Log in',
+      authToggleText: isSignup ? 'Already have an account?' : 'New to ArtBox?',
+      authToggleCta: isSignup ? 'Log in' : 'Create one',
+      onAuthName: (e) => this.setState(st => ({ auth: { ...st.auth, name: e.target.value } })),
+      onAuthEmail: (e) => this.setState(st => ({ auth: { ...st.auth, email: e.target.value } })),
+      onAuthPassword: (e) => this.setState(st => ({ auth: { ...st.auth, password: e.target.value } })),
+      toggleAuthMode: () => this.setState(st => ({ authMode: st.authMode === 'signup' ? 'login' : 'signup' })),
+      submitAuth: doAuth,
+      socialAuth: doAuth,
+      goAuth: () => this.setState({ screen: 'auth' }),
+
+      screenChoose: s.screen === 'choose',
+      screenDetails: s.screen === 'details',
+      screenGallery: s.screen === 'gallery',
+      screenBilling: s.screen === 'billing',
+      screenConfirmation: s.screen === 'confirmation',
+      screenApp: s.screen === 'app',
+      tabTrack: s.tab === 'track', tabBook: s.tab === 'book', tabAccount: s.tab === 'account',
+
+      isDiy,
+      accent: isDiy ? '#7F77DD' : '#D4537E',
+      accentSoft: isDiy ? '#EFEEFB' : '#FBEAF0',
+      step1Label: isDiy ? 'Photos' : 'Order details',
+      step2Label: isDiy ? 'Book & checkout' : 'Shipping',
+      summaryNote: isDiy ? 'Your photos are laid out by our team — free revisions before print.' : '＋ Digitization & book billed later, priced by pieces sent.',
+
+      // qty + return + upgrades + speeds (mail)
+      qty: s.qty,
+      incQty: () => this.setState(st => ({ qty: Math.min(9, st.qty + 1) })),
+      decQty: () => this.setState(st => ({ qty: Math.max(1, st.qty - 1) })),
+      returnCheck: s.returnArt ? '✓' : '',
+      returnCheckStyle: 'flex-shrink:0;width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:' + (s.returnArt ? '#D4537E' : 'transparent') + ';border:2px solid ' + (s.returnArt ? '#D4537E' : '#DCCED3') + ';',
+      returnCardStyle: 'display:flex;align-items:center;gap:14px;width:100%;background:#fff;border:2px solid ' + (s.returnArt ? '#D4537E' : '#EEE6E8') + ';border-radius:16px;padding:16px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.04);',
+      returnPriceColor: s.returnArt ? '#D4537E' : '#888780',
+      toggleReturn: () => this.setState(st => ({ returnArt: !st.returnArt })),
+      upgrades, speeds, formats,
+
+      // gallery
+      fileRef: this.fileRef,
+      onFiles: (e) => { this.addFiles(e.target.files); e.target.value = ''; },
+      openPicker: () => { if (this.fileRef.current) this.fileRef.current.click(); },
+      onDrop: (e) => { e.preventDefault(); this.setState({ dragActive: false }); this.addFiles(e.dataTransfer.files); },
+      onDragOver: (e) => { e.preventDefault(); if (!s.dragActive) this.setState({ dragActive: true }); },
+      onDragLeave: (e) => { e.preventDefault(); this.setState({ dragActive: false }); },
+      dropzoneStyle: 'display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:34px 20px;border-radius:16px;cursor:pointer;border:2px dashed ' + (s.dragActive ? '#7F77DD' : '#D9D2EC') + ';background:' + (s.dragActive ? '#EFEEFB' : '#FaF9Fc') + ';transition:all .15s;',
+      photos, hasPhotos: s.photos.length > 0, noPhotos,
+      photoCount: s.photos.length,
+      photoCountLabel: s.photos.length === 1 ? '1 image' : s.photos.length + ' images',
+      createBtnStyle: 'flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:none;border-radius:50px;font-weight:600;font-size:15px;color:#fff;background:' + (noPhotos ? '#D7CFE9' : '#7F77DD') + ';cursor:' + (noPhotos ? 'not-allowed' : 'pointer') + ';',
+      createBook: () => { if (!noPhotos) this.setState({ screen: 'billing' }); },
+
+      // billing
+      lineItems, totalLabel: this.fmt(total),
+      placeOrderLabel: 'Place order · ' + this.fmt(total),
+      ship: s.ship, card: s.card,
+      onFirst: setShip('first'), onLast: setShip('last'), onEmail: setShip('email'), onPhone: setShip('phone'),
+      onStreet: setShip('street'), onCity: setShip('city'), onProv: setShip('prov'), onPostal: setShip('postal'),
+      onCardNum: setCard('num'), onCardExp: setCard('exp'), onCardCvc: setCard('cvc'),
+      promoCode: s.promoCode,
+      onPromo: (e) => this.setState({ promoCode: e.target.value }),
+      applyPromo: () => this.setState(st => ({ promoApplied: (st.promoCode || '').trim().toUpperCase() === 'ARTKIVE' })),
+      applyLabel: s.promoApplied ? 'Applied' : 'Apply',
+      applyBg: s.promoApplied ? '#1D9E75' : '#D4537E',
+
+      // detail total
+      mailTotalLabel: this.fmt(mailTotal),
+
+      orderNo: s.orderNo,
+      emailDisplay: s.ship.email || 'your email',
+
+      // tracker / book
+      stages, stageHeadline,
+      approved: s.approved,
+      bookPending: !bookReady && !s.approved,
+      bookReview: bookReady && !s.approved,
+      pendingText: isDiy ? 'We\u2019re laying out your uploaded photos. Your proof will appear here to approve very soon.' : 'Once we\u2019ve received and photographed your art, our design team builds your book and drops the proof right here to approve.',
+      reviewText: isDiy ? 'We laid out all ' + s.photos.length + ' of your photos into a designed book. Flip through and approve when it\u2019s perfect.' : 'Our creative team curated and laid out all 142 pieces for you. Flip through the proof and approve when it\u2019s perfect — no design work needed.',
+      bookTitle: 'Our Art Year',
+      spreads, pastBooks,
+      proofHasPhotos: isDiy && s.photos.length > 0,
+      proofNoPhotos: !(isDiy && s.photos.length > 0),
+      currentOrderLabel: isDiy ? 'DIY book · ' + s.photos.length + ' pieces' : 'The ArtBox × ' + s.qty,
+
+      bookColor: s.tab === 'book' ? '#D4537E' : '#B9AEB2',
+      accountColor: (s.tab === 'account' || s.tab === 'track') ? '#D4537E' : '#B9AEB2',
+      bookBadgeStyle: (bookReady && !s.approved) ? 'position:absolute;top:-2px;right:24px;width:8px;height:8px;border-radius:50%;background:#1D9E75;' : 'display:none;',
+
+      // nav
+      goChoose: () => this.setState({ screen: 'choose' }),
+      chooseMail: () => this.setState({ route: 'mail', screen: 'details' }),
+      chooseDiy: () => this.setState({ route: 'diy', screen: 'gallery' }),
+      goBilling: () => this.setState({ screen: 'billing' }),
+      goBack: () => this.setState({ screen: isDiy ? 'gallery' : 'details' }),
+      placeOrder: () => this.setState({ screen: 'confirmation' }),
+      enterApp: () => this.setState({ screen: 'app', tab: 'track' }),
+      goTrackTab: () => this.setState({ tab: 'track' }),
+      goBookTab: () => this.setState({ tab: 'book' }),
+      goAccountTab: () => this.setState({ tab: 'account' }),
+      advance: () => this.setState(st => ({ stageIndex: Math.min(advanceMax, st.stageIndex + 1) })),
+      payInvoice: () => this.setState(st => ({ stageIndex: Math.max(st.stageIndex, proofIdx) })),
+      approve: () => this.setState({ approved: true, stageIndex: advanceMax }),
+      requestTweak: () => this.setState(st => ({ stageIndex: Math.max(st.stageIndex, proofIdx) })),
+      confTitle, confText, nextSteps,
+      startNewOrder: () => this.setState({ ...this.defaults, screen: 'choose', photos: [] }),
+      reset: () => { try { localStorage.removeItem('artbox-proto'); } catch (e) {} this.setState({ ...this.defaults, photos: [] }); },
+    };
+  }
+}
+</script>
+</body>
+</html>
