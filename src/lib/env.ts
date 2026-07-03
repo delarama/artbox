@@ -2,8 +2,25 @@ export function isProductionBackendEnabled() {
   return Boolean(process.env.DATABASE_URL);
 }
 
+function isValidStripeSecretKey(key: string) {
+  return key.startsWith("sk_test_") || key.startsWith("sk_live_");
+}
+
 export function isStripeEnabled() {
-  return Boolean(process.env.STRIPE_SECRET_KEY);
+  const key = process.env.STRIPE_SECRET_KEY?.trim();
+  return Boolean(key && isValidStripeSecretKey(key));
+}
+
+export function getStripeConfigError(): string | null {
+  const key = process.env.STRIPE_SECRET_KEY?.trim();
+  if (!key || isValidStripeSecretKey(key)) return null;
+  if (key.startsWith("pk_")) {
+    return "Stripe is misconfigured: STRIPE_SECRET_KEY is a publishable key (pk_). Use the secret key (sk_test_...) from Stripe Dashboard → Developers → API keys.";
+  }
+  if (key.startsWith("whsec_")) {
+    return "Stripe is misconfigured: STRIPE_SECRET_KEY is a webhook secret. Use sk_test_... here and put whsec_... in STRIPE_WEBHOOK_SECRET.";
+  }
+  return "Stripe is misconfigured: STRIPE_SECRET_KEY must be your Secret key from Stripe Dashboard → Developers → API keys (starts with sk_test_ or sk_live_).";
 }
 
 export function getAppUrl() {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
-import { getAppUrl, isStripeEnabled } from "@/lib/env";
+import { getAppUrl, getStripeConfigError, isStripeEnabled } from "@/lib/env";
 import { sendOrderConfirmationEmail } from "@/lib/email";
 import { getStripe } from "@/lib/stripe";
 import { computeCheckout } from "@/lib/pricing";
@@ -55,6 +55,11 @@ export async function POST(request: Request) {
     },
   });
 
+  const stripeConfigError = getStripeConfigError();
+  if (stripeConfigError) {
+    return NextResponse.json({ error: stripeConfigError }, { status: 503 });
+  }
+
   if (!isStripeEnabled()) {
     const updated = await prisma.order.update({
       where: { id: orderId },
@@ -100,6 +105,15 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Stripe checkout failed";
+    if (message.includes("Invalid API Key")) {
+      return NextResponse.json(
+        {
+          error:
+            "Stripe secret key is invalid. In Vercel, set STRIPE_SECRET_KEY to your Secret key from Stripe Dashboard → Developers → API keys (starts with sk_test_).",
+        },
+        { status: 502 },
+      );
+    }
     return NextResponse.json({ error: message }, { status: 502 });
   }
 
