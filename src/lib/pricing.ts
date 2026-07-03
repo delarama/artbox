@@ -1,4 +1,4 @@
-import { FORMATS, HST_RATE, PROMO_AMOUNT, SPEEDS, UPGRADES } from "./constants";
+import { FORMATS, HST_RATE, MAIL_BOX_LIST_PRICE, MAIL_BOX_UNIT_PRICE, PROMO_AMOUNT, SPEEDS, UPGRADES } from "./constants";
 import type { OrderState } from "./types";
 
 export function fmt(n: number) {
@@ -11,15 +11,46 @@ export type LineItem = {
   color: string;
 };
 
+export function mailBoxUnitPrice(promoApplied: boolean) {
+  return promoApplied ? MAIL_BOX_UNIT_PRICE : MAIL_BOX_LIST_PRICE;
+}
+
 export function computeMailSubtotal(state: Pick<OrderState, "qty" | "promoApplied" | "returnArt" | "up" | "speed">) {
-  let subtotal = 39 * state.qty;
-  if (state.promoApplied) subtotal -= PROMO_AMOUNT;
+  let subtotal = MAIL_BOX_LIST_PRICE * state.qty;
+  if (state.promoApplied) subtotal -= PROMO_AMOUNT * state.qty;
   if (state.returnArt) subtotal += 19.99;
   UPGRADES.forEach((u) => {
     if (state.up[u.key]) subtotal += u.price;
   });
   subtotal += (SPEEDS.find((x) => x.id === state.speed) ?? SPEEDS[0]).price;
   return subtotal;
+}
+
+function appendMailLineItems(state: Pick<OrderState, "qty" | "promoApplied" | "returnArt" | "up" | "speed">, lineItems: LineItem[]) {
+  lineItems.push({
+    label: `The ArtBox × ${state.qty}`,
+    amount: fmt(MAIL_BOX_LIST_PRICE * state.qty),
+    color: "#2C2C2A",
+  });
+  if (state.promoApplied) {
+    lineItems.push({
+      label: `Promo · ARTKIVE ($${PROMO_AMOUNT} off each)`,
+      amount: `− ${fmt(PROMO_AMOUNT * state.qty)}`,
+      color: "#1D9E75",
+    });
+  }
+  if (state.returnArt) {
+    lineItems.push({ label: "Return my artwork", amount: fmt(19.99), color: "#2C2C2A" });
+  }
+  UPGRADES.forEach((u) => {
+    if (state.up[u.key]) {
+      lineItems.push({ label: u.name, amount: fmt(u.price), color: "#2C2C2A" });
+    }
+  });
+  const speed = SPEEDS.find((x) => x.id === state.speed) ?? SPEEDS[0];
+  if (speed.price > 0) {
+    lineItems.push({ label: `${speed.name} processing`, amount: fmt(speed.price), color: "#2C2C2A" });
+  }
 }
 
 export function computeCheckout(state: OrderState) {
@@ -38,28 +69,9 @@ export function computeCheckout(state: OrderState) {
       subtotal -= PROMO_AMOUNT;
       lineItems.push({ label: "Promo · ARTKIVE", amount: `− ${fmt(PROMO_AMOUNT)}`, color: "#1D9E75" });
     }
-  } else {
-    subtotal = 39 * state.qty;
-    lineItems.push({ label: `The ArtBox × ${state.qty}`, amount: fmt(39 * state.qty), color: "#2C2C2A" });
-    if (state.promoApplied) {
-      subtotal -= PROMO_AMOUNT;
-      lineItems.push({ label: "Promo · ARTKIVE", amount: `− ${fmt(PROMO_AMOUNT)}`, color: "#1D9E75" });
-    }
-    if (state.returnArt) {
-      subtotal += 19.99;
-      lineItems.push({ label: "Return my artwork", amount: fmt(19.99), color: "#2C2C2A" });
-    }
-    UPGRADES.forEach((u) => {
-      if (state.up[u.key]) {
-        subtotal += u.price;
-        lineItems.push({ label: u.name, amount: fmt(u.price), color: "#2C2C2A" });
-      }
-    });
-    const speed = SPEEDS.find((x) => x.id === state.speed) ?? SPEEDS[0];
-    if (speed.price > 0) {
-      subtotal += speed.price;
-      lineItems.push({ label: `${speed.name} processing`, amount: fmt(speed.price), color: "#2C2C2A" });
-    }
+  } else if (state.route === "mail" || state.route === null) {
+    subtotal = computeMailSubtotal(state);
+    appendMailLineItems(state, lineItems);
   }
 
   const tax = Math.round(subtotal * HST_RATE * 100) / 100;

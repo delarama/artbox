@@ -1,17 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { ProgressHeader, StickyFooter } from "@/components/layout/StickyFooter";
 import { MobileFrame } from "@/components/layout/MobileFrame";
 import { Button } from "@/components/ui/Button";
 import { CheckBox, RadioDot, SelectionCard } from "@/components/ui/SelectionCard";
-import { SPEEDS, UPGRADES } from "@/lib/constants";
+import { SPEEDS, UPGRADES, MAIL_BOX_LIST_PRICE, PROMO_AMOUNT } from "@/lib/constants";
 import { useOrder } from "@/lib/order-context";
-import { computeMailDueToday, fmt } from "@/lib/pricing";
+import { computeMailDueToday, fmt, mailBoxUnitPrice } from "@/lib/pricing";
 
 export default function MailOrderPage() {
-  const { state, setQty, toggleReturnArt, toggleUpgrade, setSpeed } = useOrder();
+  const { state, setRoute, setQty, toggleReturnArt, toggleUpgrade, setSpeed } = useOrder();
   const total = computeMailDueToday(state);
+  const unitPrice = mailBoxUnitPrice(state.promoApplied);
+  const lineTotal = unitPrice * state.qty;
+
+  useEffect(() => {
+    setRoute("mail");
+  }, [setRoute]);
 
   return (
     <MobileFrame>
@@ -39,10 +46,16 @@ export default function MailOrderPage() {
               </div>
               <div className="shrink-0 text-right">
                 <div className="flex items-center justify-end gap-1.5">
-                  <span className="text-[22px] font-bold">$29</span>
-                  <span className="rounded bg-pink px-1.5 py-0.5 text-[10px] font-semibold text-white">$10 OFF</span>
+                  <span className="text-[22px] font-bold">{fmt(lineTotal)}</span>
+                  {state.promoApplied ? (
+                    <span className="rounded bg-pink px-1.5 py-0.5 text-[10px] font-semibold text-white">${PROMO_AMOUNT} OFF</span>
+                  ) : null}
                 </div>
-                <span className="text-xs font-medium text-[#B0A6A9] line-through">$39 CAD</span>
+                {state.promoApplied ? (
+                  <span className="text-xs font-medium text-[#B0A6A9] line-through">{fmt(MAIL_BOX_LIST_PRICE * state.qty)} CAD</span>
+                ) : (
+                  <span className="text-xs font-medium text-muted">{fmt(unitPrice)} each</span>
+                )}
               </div>
             </div>
             <div className="my-4 flex flex-col gap-2">

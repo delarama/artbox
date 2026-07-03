@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProgressHeader, StickyFooter } from "@/components/layout/StickyFooter";
 import { MobileFrame } from "@/components/layout/MobileFrame";
@@ -12,8 +12,12 @@ export default function DiyGalleryPage() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
-  const { state, addPhotos, removePhoto } = useOrder();
+  const { state, setRoute, addPhotos, removePhoto } = useOrder();
   const noPhotos = state.photos.length === 0;
+
+  useEffect(() => {
+    setRoute("diy");
+  }, [setRoute]);
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault();

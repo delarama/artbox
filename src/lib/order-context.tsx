@@ -91,7 +91,24 @@ export function OrderProvider({ children }: { children: ReactNode }) {
         setIsAdmin(me.isAdmin);
         if (orderData.mode === "production" && orderData.order) {
           setProductionMode(true);
-          setState((prev) => ({ ...defaultOrderState, ...orderData.order, photos: orderData.order?.photos ?? prev.photos }));
+          const order = orderData.order;
+          setState((prev) => ({
+            ...prev,
+            orderId: order.orderId,
+            orderNo: order.orderNo ?? prev.orderNo,
+            route: prev.route ?? order.route ?? null,
+            qty: prev.qty !== defaultOrderState.qty ? prev.qty : (order.qty ?? prev.qty),
+            returnArt: order.returnArt ?? prev.returnArt,
+            up: { ...defaultOrderState.up, ...(order.up ?? {}) },
+            speed: order.speed ?? prev.speed,
+            diyFormat: order.diyFormat ?? prev.diyFormat,
+            promoCode: order.promoCode ?? prev.promoCode,
+            promoApplied: order.promoApplied ?? prev.promoApplied,
+            ship: { ...defaultOrderState.ship, ...(order.ship ?? {}) },
+            approved: order.approved ?? prev.approved,
+            stageIndex: order.stageIndex ?? prev.stageIndex,
+            photos: order.photos ?? prev.photos,
+          }));
         }
       })
       .catch(() => {
@@ -143,24 +160,24 @@ export function OrderProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setRoute = useCallback((route: Route) => {
-    setState((s) => ({ ...s, route }));
-  }, []);
+    applyAndSync((s) => ({ ...s, route }));
+  }, [applyAndSync]);
 
   const setQty = useCallback((qty: number) => {
-    setState((s) => ({ ...s, qty: Math.min(9, Math.max(1, qty)) }));
-  }, []);
+    applyAndSync((s) => ({ ...s, qty: Math.min(9, Math.max(1, qty)) }));
+  }, [applyAndSync]);
 
   const toggleReturnArt = useCallback(() => {
-    setState((s) => ({ ...s, returnArt: !s.returnArt }));
-  }, []);
+    applyAndSync((s) => ({ ...s, returnArt: !s.returnArt }));
+  }, [applyAndSync]);
 
   const toggleUpgrade = useCallback((key: keyof Upgrades) => {
-    setState((s) => ({ ...s, up: { ...s.up, [key]: !s.up[key] } }));
-  }, []);
+    applyAndSync((s) => ({ ...s, up: { ...s.up, [key]: !s.up[key] } }));
+  }, [applyAndSync]);
 
   const setSpeed = useCallback((speed: Speed) => {
-    setState((s) => ({ ...s, speed }));
-  }, []);
+    applyAndSync((s) => ({ ...s, speed }));
+  }, [applyAndSync]);
 
   const setDiyFormat = useCallback((diyFormat: DiyFormat) => {
     setState((s) => ({ ...s, diyFormat }));

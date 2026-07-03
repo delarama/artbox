@@ -2,6 +2,8 @@ import type { DiyFormat, Speed } from "./types";
 
 export const PROMO_CODE = "ARTKIVE";
 export const PROMO_AMOUNT = 10;
+export const MAIL_BOX_LIST_PRICE = 39;
+export const MAIL_BOX_UNIT_PRICE = MAIL_BOX_LIST_PRICE - PROMO_AMOUNT;
 export const HST_RATE = 0.13;
 export const STORAGE_KEY = "artbox-proto";
 
