@@ -1,5 +1,6 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { Poppins } from "next/font/google";
+import { createSiteMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -8,23 +9,17 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export const metadata: Metadata = {
-  title: "ArtBox — Canadian keepsake studio",
-  description:
-    "Send us your child's artwork. We photograph, curate, and turn it into a beautiful keepsake book or framed mosaic.",
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: "/apple-icon.png",
-  },
-};
+export const metadata = createSiteMetadata();
 
 export const viewport: Viewport = {
   themeColor: "#1C1C2E",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-CA">
       <body className={`${poppins.variable} antialiased`}>{children}</body>
     </html>
   );
