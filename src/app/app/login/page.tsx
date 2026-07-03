@@ -86,12 +86,21 @@ function LoginForm() {
         redirect: false,
       });
       if (result?.error) {
-        setError(isSignup ? "Account created, but sign-in failed. Try logging in." : "Invalid email or password.");
+        setError(
+          isSignup
+            ? "Account created, but sign-in failed. Try logging in with Email code."
+            : "Invalid email or password. Try Email code or Forgot password.",
+        );
         return;
       }
       finishSignIn();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Authentication failed");
+      const message = err instanceof Error ? err.message : "Authentication failed";
+      if (isSignup && message.includes("already exists")) {
+        setError("That email is already registered. Log in, or use Email code on the login page.");
+      } else {
+        setError(message);
+      }
     } finally {
       setLoading(false);
     }

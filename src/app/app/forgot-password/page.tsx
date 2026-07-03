@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
           </p>
           {sent ? (
             <p className="rounded-xl bg-pink-light p-4 text-sm leading-relaxed text-pink-dark">
-              If an account exists for that email, a reset link is on its way.
+              If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.
             </p>
           ) : (
             <>
@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
                     await requestPasswordReset(email);
                     setSent(true);
                   } catch {
-                    setError("Could not send reset email. Try again.");
+                    setError("Email delivery is not set up yet. Use “Email code” on the login page instead.");
                   } finally {
                     setLoading(false);
                   }
@@ -55,7 +55,14 @@ export default function ForgotPasswordPage() {
               >
                 {loading ? "Sending…" : "Send reset link"}
               </Button>
-              {error ? <p className="mt-3 text-center text-sm text-coral">{error}</p> : null}
+              {error ? (
+                <p className="mt-3 text-center text-sm text-coral">
+                  {error}{" "}
+                  <Link href="/app/login" className="font-semibold text-pink no-underline">
+                    Go to login →
+                  </Link>
+                </p>
+              ) : null}
             </>
           )}
           <p className="mt-6 text-center text-sm text-muted">

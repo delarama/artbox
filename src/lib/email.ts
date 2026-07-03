@@ -13,8 +13,9 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
   if (!apiKey) {
     if (process.env.NODE_ENV === "development") {
       console.info("[email:dev]", { to, subject, html });
+      return { ok: true, mode: "dev" as const };
     }
-    return { ok: true, mode: "dev" as const };
+    throw new Error("Email is not configured for production");
   }
 
   const res = await fetch("https://api.resend.com/emails", {
