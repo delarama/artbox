@@ -28,7 +28,8 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to send email");
+    const detail = await res.text().catch(() => "");
+    throw new Error(detail || "Failed to send email");
   }
 
   return { ok: true, mode: "resend" as const };

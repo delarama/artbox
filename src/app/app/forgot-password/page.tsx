@@ -46,8 +46,12 @@ export default function ForgotPasswordPage() {
                   try {
                     await requestPasswordReset(email);
                     setSent(true);
-                  } catch {
-                    setError("Email delivery is not set up yet. Use “Email code” on the login page instead.");
+                  } catch (err) {
+                    setError(
+                      err instanceof Error
+                        ? err.message
+                        : "Could not send reset email. Check that EMAIL_FROM is set in Vercel.",
+                    );
                   } finally {
                     setLoading(false);
                   }

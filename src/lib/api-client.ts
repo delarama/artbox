@@ -79,7 +79,10 @@ export async function requestPasswordReset(email: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
-  if (!res.ok) throw new Error("Could not send reset email");
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error ?? "Could not send reset email");
+  }
 }
 
 export async function resetPassword(token: string, password: string) {
