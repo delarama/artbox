@@ -4,6 +4,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import { authConfig } from "@/lib/auth.config";
 import { verifyOtp } from "@/lib/auth-otp";
 import { prisma } from "@/lib/db";
 
@@ -80,14 +81,11 @@ if (process.env.APPLE_ID && process.env.APPLE_SECRET) {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  trustHost: true,
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/app/login",
-  },
   providers,
   callbacks: {
+    ...authConfig.callbacks,
     async jwt({ token, user, account }) {
       if (user?.id) {
         token.id = user.id;
@@ -103,10 +101,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       return token;
-    },
-    async session({ session, token }) {
-      if (session.user && token.id) session.user.id = token.id as string;
-      return session;
     },
   },
 });

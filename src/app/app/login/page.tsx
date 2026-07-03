@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getSession, signIn, useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { getSession, signIn } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 import { AppBackHeader } from "@/components/layout/AppBackHeader";
 import { MobileFrame } from "@/components/layout/MobileFrame";
@@ -32,11 +32,16 @@ function AppleIcon() {
 
 type AuthMethod = "password" | "otp";
 
+function safeCallbackUrl(raw: string | null) {
+  if (!raw || !raw.startsWith("/app/") || raw.startsWith("/app/login")) {
+    return "/app/choose";
+  }
+  return raw;
+}
+
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/app/choose";
-  const { status: sessionStatus } = useSession();
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
   const { state, setAuthMode, completeAuth } = useOrder();
   const [authConfig, setAuthConfig] = useState<AuthConfig | null>(null);
   const [method, setMethod] = useState<AuthMethod>("password");
@@ -54,17 +59,10 @@ function LoginForm() {
     fetchAuthConfig().then(setAuthConfig).catch(() => setAuthConfig(null));
   }, []);
 
-  useEffect(() => {
-    if (sessionStatus === "authenticated") {
-      completeAuth();
-      router.replace(callbackUrl);
-    }
-  }, [sessionStatus, callbackUrl, completeAuth, router]);
-
   const finishSignIn = async () => {
     completeAuth();
     await getSession();
-    window.location.assign(callbackUrl);
+    window.location.href = callbackUrl;
   };
 
   const proceedWithPassword = async () => {
@@ -288,7 +286,7 @@ function LoginForm() {
                 ) : null}
               </div>
 
-              <Button type="submit" fullWidth className="mt-5" disabled={loading || sessionStatus === "loading"}>
+              <Button type="submit" fullWidth className="mt-5" disabled={loading}>
                 {loading ? "Please wait…" : isSignup ? "Create account" : "Log in"}
               </Button>
 
