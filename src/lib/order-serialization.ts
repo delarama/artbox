@@ -19,7 +19,11 @@ export function orderToClientState(
   photos: OrderPhotoRow[] = [],
 ): Partial<OrderState> & { orderId: string } {
   const ship = (order.ship ?? {}) as OrderState["ship"];
-  const up = (order.upgrades ?? defaultOrderState.up) as Upgrades;
+  const upRaw = order.upgrades as Partial<Upgrades> | null | undefined;
+  const up =
+    upRaw && Object.keys(upRaw).length > 0
+      ? ({ ...defaultOrderState.up, ...upRaw } as Upgrades)
+      : defaultOrderState.up;
 
   return {
     orderId: order.id,

@@ -15,3 +15,5 @@ Before pushing to `main` (which triggers Vercel deploy):
 Batch related fixes into one commit/push when possible instead of pushing after every small change.
 
 Do not push to production to "test" something that can be tested locally first.
+
+Run only one dev server at a time. If you see intermittent `Internal Server Error` locally, stop other `next dev` processes and run `npm run dev:clean`.
