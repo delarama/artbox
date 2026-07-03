@@ -57,8 +57,11 @@ export async function startCheckout(orderId: string, state: OrderState) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ orderId, state }),
   });
-  if (!res.ok) throw new Error("Checkout failed");
-  return res.json() as Promise<{ mode: "demo" | "stripe"; url?: string; orderId: string }>;
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error ?? "Checkout failed");
+  }
+  return data as { mode: "demo" | "stripe"; url?: string; orderId: string };
 }
 
 export async function registerAccount(name: string, email: string, password: string) {

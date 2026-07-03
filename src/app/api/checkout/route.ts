@@ -5,6 +5,7 @@ import { getAppUrl, isStripeEnabled } from "@/lib/env";
 import { sendOrderConfirmationEmail } from "@/lib/email";
 import { getStripe } from "@/lib/stripe";
 import { computeCheckout } from "@/lib/pricing";
+import { clientStateToOrderPatch } from "@/lib/order-serialization";
 import type { OrderState } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -32,15 +33,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
+  const route = (order.route ?? clientState.route) as OrderState["route"];
+  if (!route) {
+    return NextResponse.json({ error: "Choose mail or DIY before checkout" }, { status: 400 });
+  }
+
   const totals = computeCheckout({
     ...clientState,
-    route: order.route as OrderState["route"],
+    route,
     photos: order.photos.map((p) => ({ id: p.id, url: p.url, name: p.filename })),
   });
 
   await prisma.order.update({
     where: { id: orderId },
     data: {
+      ...clientStateToOrderPatch({ ...clientState, route }),
       status: "pending_payment",
       subtotalCents: Math.round(totals.subtotal * 100),
       taxCents: Math.round(totals.tax * 100),
@@ -66,29 +73,39 @@ export async function POST(request: Request) {
 
   const stripe = getStripe();
   const appUrl = getAppUrl().replace(/\/$/, "");
-  const checkoutSession = await stripe.checkout.sessions.create({
-    mode: "payment",
-    customer_email: clientState.ship.email || session.user.email || undefined,
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency: "cad",
-          unit_amount: Math.round(totals.total * 100),
-          product_data: {
-            name: order.route === "diy" ? "ArtBox DIY Keepsake Book" : "ArtBox Mail-in Kit",
-            description: `Order ${order.orderNo}`,
+  let checkoutSession;
+  try {
+    checkoutSession = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer_email: clientState.ship.email || session.user.email || undefined,
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: "cad",
+            unit_amount: Math.round(totals.total * 100),
+            product_data: {
+              name: route === "diy" ? "ArtBox DIY Keepsake Book" : "ArtBox Mail-in Kit",
+              description: `Order ${order.orderNo}`,
+            },
           },
         },
+      ],
+      metadata: {
+        orderId,
+        userId: session.user.id,
       },
-    ],
-    metadata: {
-      orderId,
-      userId: session.user.id,
-    },
-    success_url: `${appUrl}/app/confirmation?orderId=${orderId}`,
-    cancel_url: `${appUrl}/app/checkout?orderId=${orderId}`,
-  });
+      success_url: `${appUrl}/app/confirmation?orderId=${orderId}`,
+      cancel_url: `${appUrl}/app/checkout?orderId=${orderId}`,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Stripe checkout failed";
+    return NextResponse.json({ error: message }, { status: 502 });
+  }
+
+  if (!checkoutSession.url) {
+    return NextResponse.json({ error: "Stripe did not return a checkout URL" }, { status: 502 });
+  }
 
   await prisma.order.update({
     where: { id: orderId },

@@ -7,9 +7,10 @@ import { MobileFrame } from "@/components/layout/MobileFrame";
 import { Button } from "@/components/ui/Button";
 import { Input, Select } from "@/components/ui/Input";
 import { RadioDot, SelectionCard } from "@/components/ui/SelectionCard";
-import { startCheckout } from "@/lib/api-client";
+import { startCheckout, patchOrder } from "@/lib/api-client";
 import { FORMATS, PROVINCES } from "@/lib/constants";
 import { useOrder } from "@/lib/order-context";
+import { clientStateToOrderPatch } from "@/lib/order-serialization";
 import { computeCheckout, fmt } from "@/lib/pricing";
 
 export default function CheckoutPage() {
@@ -162,17 +163,29 @@ export default function CheckoutPage() {
               setLoading(true);
               setError(null);
               try {
+                if (!state.route) {
+                  setError("Go back and choose mail or DIY before checkout.");
+                  return;
+                }
                 if (productionMode && state.orderId) {
+                  await patchOrder(state.orderId, clientStateToOrderPatch(state));
                   const result = await startCheckout(state.orderId, state);
                   if (result.mode === "stripe" && result.url) {
                     window.location.href = result.url;
                     return;
                   }
+                  if (result.mode === "demo") {
+                    await placeOrder();
+                    router.push("/app/confirmation");
+                    return;
+                  }
+                  setError("Could not start Stripe checkout. Check Stripe keys in Vercel.");
+                  return;
                 }
                 await placeOrder();
                 router.push("/app/confirmation");
-              } catch {
-                setError("Checkout failed. Please try again.");
+              } catch (err) {
+                setError(err instanceof Error ? err.message : "Checkout failed. Please try again.");
               } finally {
                 setLoading(false);
               }
