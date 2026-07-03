@@ -16,11 +16,12 @@ export async function GET(
   try {
     const buffer = await readFile(absolutePath);
     const ext = path.extname(storageKey).toLowerCase();
-    const mimeType = ext === ".png" ? "image/png" : "image/jpeg";
+    const mimeType =
+      ext === ".webp" ? "image/webp" : ext === ".png" ? "image/png" : "image/jpeg";
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": mimeType,
-        "Cache-Control": "private, max-age=3600",
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   } catch {

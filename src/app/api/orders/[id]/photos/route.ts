@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import path from "path";
 import { auth } from "@/lib/auth";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
+import { WEBP_MIME } from "@/lib/image-process";
 import { saveOrderPhoto } from "@/lib/storage";
 
 const MAX_PHOTOS = 30;
@@ -44,13 +46,14 @@ export async function POST(
   }
 
   const saved = await saveOrderPhoto(file, id);
+  const webpName = `${path.basename(file.name, path.extname(file.name)) || "photo"}.webp`;
   const photo = await prisma.orderPhoto.create({
     data: {
       orderId: id,
-      filename: file.name,
+      filename: webpName,
       storageKey: saved.storageKey,
       url: saved.url,
-      mimeType: file.type,
+      mimeType: WEBP_MIME,
       sizeBytes: saved.sizeBytes,
     },
   });

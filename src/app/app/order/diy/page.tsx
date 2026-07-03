@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ProgressHeader, StickyFooter } from "@/components/layout/StickyFooter";
 import { MobileFrame } from "@/components/layout/MobileFrame";
 import { Button } from "@/components/ui/Button";
+import { PhotoThumb } from "@/components/ui/PhotoThumb";
 import { useOrder } from "@/lib/order-context";
 
 export default function DiyGalleryPage() {
@@ -49,7 +50,7 @@ export default function DiyGalleryPage() {
             </span>
           </div>
           <p className="mb-[22px] text-sm leading-relaxed text-[#615f5b]">
-            Upload photos of your child&apos;s artwork. We recommend clear, well-lit shots — JPG or PNG.
+            Upload photos of your child&apos;s artwork. We optimize them as WebP for fast loading — JPG or PNG in.
           </p>
 
           <button
@@ -86,7 +87,7 @@ export default function DiyGalleryPage() {
             <div className="mt-[22px] grid grid-cols-3 gap-2.5">
               {state.photos.map((photo) => (
                 <div key={photo.id} className="relative aspect-square overflow-hidden rounded-xl bg-[#F3EEF0] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${photo.url}")` }} />
+                  <PhotoThumb src={photo.url} alt={photo.name} />
                   <button
                     type="button"
                     title="Remove"

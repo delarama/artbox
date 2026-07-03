@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { PhotoThumb } from "@/components/ui/PhotoThumb";
 import { useOrder } from "@/lib/order-context";
 
 const SPREADS = [
@@ -99,7 +100,7 @@ export default function BookPage() {
             <div className="mb-5 grid grid-cols-3 gap-2">
               {state.photos.map((photo) => (
                 <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg bg-[#F3EEF0] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${photo.url}")` }} />
+                  <PhotoThumb src={photo.url} alt={photo.name} />
                 </div>
               ))}
             </div>

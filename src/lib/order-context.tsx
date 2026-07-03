@@ -22,6 +22,7 @@ import {
 } from "./api-client";
 import { STORAGE_KEY } from "./constants";
 import { defaultOrderState } from "./defaults";
+import { fileToWebpDataUrl } from "./image-client";
 import { clientStateToOrderPatch } from "./order-serialization";
 import type { AuthMode, DiyFormat, OrderState, Photo, Route, Speed, Upgrades } from "./types";
 
@@ -201,18 +202,18 @@ export function OrderProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const url = ev.target?.result;
-        if (typeof url !== "string") return;
-        const photo: Photo = {
-          id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-          url,
-          name: file.name,
-        };
-        setState((s) => ({ ...s, photos: [...s.photos, photo] }));
-      };
-      reader.readAsDataURL(file);
+      void fileToWebpDataUrl(file)
+        .then((url) => {
+          const photo: Photo = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+            url,
+            name: file.name.replace(/\.[^.]+$/, ".webp"),
+          };
+          setState((s) => ({ ...s, photos: [...s.photos, photo] }));
+        })
+        .catch(() => {
+          // skip unreadable files
+        });
     });
   }, [productionMode]);
 

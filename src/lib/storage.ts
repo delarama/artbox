@@ -4,6 +4,7 @@ import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 import { isSupabaseStorageEnabled } from "@/lib/env";
+import { optimizePhotoToWebp, WEBP_MIME } from "@/lib/image-process";
 
 const UPLOAD_DIR = path.join(process.cwd(), "uploads");
 
@@ -47,15 +48,15 @@ function publicUrlForKey(storageKey: string) {
 }
 
 export async function saveOrderPhoto(file: File, orderId: string) {
-  const ext = path.extname(file.name) || ".jpg";
-  const storageKey = `${orderId}/${randomUUID()}${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const storageKey = `${orderId}/${randomUUID()}.webp`;
+  const raw = Buffer.from(await file.arrayBuffer());
+  const buffer = await optimizePhotoToWebp(raw);
 
   if (isSupabaseStorageEnabled()) {
     const supabase = getSupabaseAdmin();
     const bucket = process.env.SUPABASE_STORAGE_BUCKET!;
     const { error } = await supabase.storage.from(bucket).upload(storageKey, buffer, {
-      contentType: file.type,
+      contentType: WEBP_MIME,
       upsert: false,
     });
     if (error) {
@@ -75,7 +76,7 @@ export async function saveOrderPhoto(file: File, orderId: string) {
         Bucket: process.env.S3_BUCKET!,
         Key: storageKey,
         Body: buffer,
-        ContentType: file.type,
+        ContentType: WEBP_MIME,
       }),
     );
     return {
