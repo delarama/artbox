@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 import { AppBackHeader } from "@/components/layout/AppBackHeader";
 import { MobileFrame } from "@/components/layout/MobileFrame";
@@ -36,9 +36,13 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/app/choose";
-  const { state, setAuthMode, setAuth, completeAuth } = useOrder();
+  const { status: sessionStatus } = useSession();
+  const { state, setAuthMode, completeAuth } = useOrder();
   const [authConfig, setAuthConfig] = useState<AuthConfig | null>(null);
   const [method, setMethod] = useState<AuthMethod>("password");
+  const [email, setEmail] = useState(state.auth.email);
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState(state.auth.name);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [otpCode, setOtpCode] = useState("");
@@ -50,23 +54,29 @@ function LoginForm() {
     fetchAuthConfig().then(setAuthConfig).catch(() => setAuthConfig(null));
   }, []);
 
-  const finishSignIn = () => {
+  useEffect(() => {
+    if (sessionStatus === "authenticated") {
+      completeAuth();
+      router.replace(callbackUrl);
+    }
+  }, [sessionStatus, callbackUrl, completeAuth, router]);
+
+  const finishSignIn = async () => {
     completeAuth();
-    router.refresh();
-    router.push(callbackUrl);
+    await getSession();
+    window.location.assign(callbackUrl);
   };
 
   const proceedWithPassword = async () => {
     setError(null);
-    const email = state.auth.email.trim();
-    const password = state.auth.password;
-    const name = state.auth.name.trim();
+    const normalizedEmail = email.trim().toLowerCase();
+    const trimmedName = name.trim();
 
-    if (!email) {
+    if (!normalizedEmail) {
       setError("Enter your email address.");
       return;
     }
-    if (isSignup && !name) {
+    if (isSignup && !trimmedName) {
       setError("Enter your first name.");
       return;
     }
@@ -78,14 +88,14 @@ function LoginForm() {
     setLoading(true);
     try {
       if (isSignup) {
-        await registerAccount(name, email, password);
+        await registerAccount(trimmedName, normalizedEmail, password);
       }
       const result = await signIn("credentials", {
-        email,
+        email: normalizedEmail,
         password,
         redirect: false,
       });
-      if (result?.error) {
+      if (!result || result.error || result.ok === false) {
         setError(
           isSignup
             ? "Account created, but sign-in failed. Try logging in with Email code."
@@ -93,7 +103,7 @@ function LoginForm() {
         );
         return;
       }
-      finishSignIn();
+      await finishSignIn();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Authentication failed";
       if (isSignup && message.includes("already exists")) {
@@ -109,15 +119,15 @@ function LoginForm() {
   const sendCode = async () => {
     setError(null);
     setDevCodeHint(null);
-    const email = state.auth.email.trim();
-    if (!email) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
       setError("Enter your email address.");
       return;
     }
 
     setLoading(true);
     try {
-      const result = await sendOtpCode(email);
+      const result = await sendOtpCode(normalizedEmail);
       setOtpSent(true);
       if (result.devCode) setDevCodeHint(result.devCode);
     } catch (err) {
@@ -129,9 +139,9 @@ function LoginForm() {
 
   const proceedWithOtp = async () => {
     setError(null);
-    const email = state.auth.email.trim();
+    const normalizedEmail = email.trim().toLowerCase();
     const code = otpCode.trim();
-    if (!email || !code) {
+    if (!normalizedEmail || !code) {
       setError("Enter your email and the 6-digit code.");
       return;
     }
@@ -139,15 +149,15 @@ function LoginForm() {
     setLoading(true);
     try {
       const result = await signIn("otp", {
-        email,
+        email: normalizedEmail,
         code,
         redirect: false,
       });
-      if (result?.error) {
+      if (!result || result.error || result.ok === false) {
         setError("Invalid or expired code. Request a new one.");
         return;
       }
-      finishSignIn();
+      await finishSignIn();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign-in failed");
     } finally {
@@ -169,7 +179,18 @@ function LoginForm() {
     <MobileFrame>
       <div className="flex min-h-screen flex-col">
         <AppBackHeader href="/" />
-        <div className="flex flex-1 flex-col px-6 pb-6 pt-9">
+        <form
+          className="flex flex-1 flex-col px-6 pb-6 pt-9"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (method === "otp") {
+              if (otpSent) void proceedWithOtp();
+              else void sendCode();
+            } else {
+              void proceedWithPassword();
+            }
+          }}
+        >
           <h1 className="mb-1.5 text-[26px] font-bold tracking-tight text-navy">
             {method === "otp" ? "Sign in with email" : isSignup ? "Create your account" : "Welcome back"}
           </h1>
@@ -184,12 +205,12 @@ function LoginForm() {
           {showSocial ? (
             <div className="mb-5 flex flex-col gap-3">
               {showGoogle ? (
-                <Button variant="outline" fullWidth onClick={() => socialSignIn("google")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
+                <Button type="button" variant="outline" fullWidth onClick={() => socialSignIn("google")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
                   <GoogleIcon /> Continue with Google
                 </Button>
               ) : null}
               {showApple ? (
-                <Button variant="outline" fullWidth onClick={() => socialSignIn("apple")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
+                <Button type="button" variant="outline" fullWidth onClick={() => socialSignIn("apple")} className="border-[#E4D8DC] text-body hover:bg-[#FAF7F8]">
                   <AppleIcon /> Continue with Apple
                 </Button>
               ) : null}
@@ -238,8 +259,8 @@ function LoginForm() {
                   <Input
                     label="First name"
                     placeholder="First name"
-                    value={state.auth.name}
-                    onChange={(e) => setAuth({ name: e.target.value })}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 ) : null}
                 <Input
@@ -247,16 +268,18 @@ function LoginForm() {
                   placeholder="Email"
                   inputMode="email"
                   autoComplete="email"
-                  value={state.auth.email}
-                  onChange={(e) => setAuth({ email: e.target.value })}
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
                   label="Password"
                   placeholder="Password"
                   type="password"
                   autoComplete={isSignup ? "new-password" : "current-password"}
-                  value={state.auth.password}
-                  onChange={(e) => setAuth({ password: e.target.value })}
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 {!isSignup ? (
                   <Link href="/app/forgot-password" className="-mt-1 self-end text-[13px] font-medium text-muted no-underline">
@@ -265,7 +288,7 @@ function LoginForm() {
                 ) : null}
               </div>
 
-              <Button fullWidth className="mt-5" onClick={() => void proceedWithPassword()} disabled={loading}>
+              <Button type="submit" fullWidth className="mt-5" disabled={loading || sessionStatus === "loading"}>
                 {loading ? "Please wait…" : isSignup ? "Create account" : "Log in"}
               </Button>
 
@@ -288,8 +311,9 @@ function LoginForm() {
                   placeholder="Email"
                   inputMode="email"
                   autoComplete="email"
-                  value={state.auth.email}
-                  onChange={(e) => setAuth({ email: e.target.value })}
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 {otpSent ? (
                   <Input
@@ -297,6 +321,7 @@ function LoginForm() {
                     placeholder="123456"
                     inputMode="numeric"
                     autoComplete="one-time-code"
+                    name="otp"
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   />
@@ -310,12 +335,12 @@ function LoginForm() {
               ) : null}
 
               {!otpSent ? (
-                <Button fullWidth className="mt-5" onClick={() => void sendCode()} disabled={loading}>
+                <Button type="submit" fullWidth className="mt-5" disabled={loading}>
                   {loading ? "Sending…" : "Send sign-in code"}
                 </Button>
               ) : (
                 <>
-                  <Button fullWidth className="mt-5" onClick={() => void proceedWithOtp()} disabled={loading || otpCode.length < 6}>
+                  <Button type="submit" fullWidth className="mt-5" disabled={loading || otpCode.length < 6}>
                     {loading ? "Verifying…" : "Verify & sign in"}
                   </Button>
                   <button
@@ -332,7 +357,7 @@ function LoginForm() {
           )}
 
           {error ? <p className="mt-3 text-center text-sm text-coral">{error}</p> : null}
-        </div>
+        </form>
       </div>
     </MobileFrame>
   );
