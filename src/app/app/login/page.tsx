@@ -9,6 +9,7 @@ import { MobileFrame } from "@/components/layout/MobileFrame";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { fetchAuthConfig, registerAccount, sendOtpCode, type AuthConfig } from "@/lib/api-client";
+import { getMinPasswordLength } from "@/lib/env";
 import { useOrder } from "@/lib/order-context";
 
 function GoogleIcon() {
@@ -78,8 +79,8 @@ function LoginForm() {
       setError("Enter your first name.");
       return;
     }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (password.length < getMinPasswordLength()) {
+      setError(`Password must be at least ${getMinPasswordLength()} characters.`);
       return;
     }
 

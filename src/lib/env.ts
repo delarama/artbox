@@ -2,6 +2,10 @@ export function isProductionBackendEnabled() {
   return Boolean(process.env.DATABASE_URL);
 }
 
+export function getMinPasswordLength() {
+  return process.env.NODE_ENV === "development" ? 4 : 8;
+}
+
 function isValidStripeSecretKey(key: string) {
   return key.startsWith("sk_test_") || key.startsWith("sk_live_");
 }
