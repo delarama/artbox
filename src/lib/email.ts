@@ -8,7 +8,8 @@ type SendEmailInput = {
 
 export async function sendEmail({ to, subject, html }: SendEmailInput) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM ?? "ArtBox <hello@artbox.ca>";
+  const from =
+    process.env.EMAIL_FROM ?? (apiKey ? "ArtBox <onboarding@resend.dev>" : "ArtBox <hello@artbox.ca>");
 
   if (!apiKey) {
     if (process.env.NODE_ENV === "development") {
@@ -29,7 +30,19 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
 
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
-    throw new Error(detail || "Failed to send email");
+    let message = "Failed to send email";
+    try {
+      const parsed = JSON.parse(detail) as { message?: string };
+      message = parsed.message ?? message;
+    } catch {
+      if (detail) message = detail;
+    }
+    if (message.includes("verify a domain") || message.includes("testing emails")) {
+      throw new Error(
+        "Resend test mode only delivers to your Resend account email. Verify a domain in Resend, or use Email code on the login page.",
+      );
+    }
+    throw new Error(message);
   }
 
   return { ok: true, mode: "resend" as const };

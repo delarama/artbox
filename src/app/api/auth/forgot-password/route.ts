@@ -22,6 +22,12 @@ export async function POST(request: Request) {
   const email = parsed.data.email.toLowerCase().trim();
   const user = await prisma.user.findUnique({ where: { email } });
 
+  if (user && !user.passwordHash) {
+    return NextResponse.json({
+      error: "This account uses email sign-in codes, not a password. Use Email code on the login page.",
+    }, { status: 400 });
+  }
+
   // Always return success to avoid email enumeration
   if (user?.passwordHash) {
     const rawToken = randomBytes(32).toString("hex");
@@ -35,8 +41,10 @@ export async function POST(request: Request) {
 
     try {
       await sendPasswordResetEmail(email, rawToken);
-    } catch {
-      return NextResponse.json({ error: "Could not send reset email" }, { status: 500 });
+    } catch (err) {
+      return NextResponse.json({
+        error: err instanceof Error ? err.message : "Could not send reset email",
+      }, { status: 500 });
     }
   }
 

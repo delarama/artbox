@@ -73,6 +73,10 @@ export default function ForgotPasswordPage() {
             <Link href="/app/login" className="font-semibold text-pink no-underline">
               Back to login
             </Link>
+            {" · "}
+            <Link href="/app/login" className="font-semibold text-pink no-underline">
+              Use email code instead
+            </Link>
           </p>
         </div>
       </div>
