@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { getAppUrl } from "@/lib/env";
+import { ogImageAlt, ogImageSize } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site";
+
+const shareImage = {
+  url: "/opengraph-image",
+  width: ogImageSize.width,
+  height: ogImageSize.height,
+  alt: ogImageAlt,
+  type: "image/png",
+};
 
 export function createSiteMetadata(overrides?: Metadata): Metadata {
   const appUrl = getAppUrl();
@@ -25,18 +34,23 @@ export function createSiteMetadata(overrides?: Metadata): Metadata {
     ],
     authors: [{ name: "ArtBox Canada Inc." }],
     creator: "ArtBox Canada Inc.",
+    alternates: {
+      canonical: appUrl,
+    },
     openGraph: {
       type: "website",
       locale: "en_CA",
       url: appUrl,
       siteName: siteConfig.name,
-      title: siteConfig.title,
-      description: siteConfig.description,
+      title: siteConfig.shareTitle,
+      description: siteConfig.shareDescription,
+      images: [shareImage],
     },
     twitter: {
       card: "summary_large_image",
-      title: siteConfig.title,
-      description: siteConfig.description,
+      title: siteConfig.shareTitle,
+      description: siteConfig.shareDescription,
+      images: ["/twitter-image"],
     },
     icons: {
       icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
