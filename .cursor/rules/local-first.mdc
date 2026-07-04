@@ -16,4 +16,4 @@ Batch related fixes into one commit/push when possible instead of pushing after 
 
 Do not push to production to "test" something that can be tested locally first.
 
-Run only one dev server at a time. If you see intermittent `Internal Server Error` locally, stop other `next dev` processes and run `npm run dev:clean`.
+Run only one dev server at a time. If localhost shows `Internal Server Error`, run `npm run dev:clean` (clears `.next` and restarts on port 3000). Do not run `npm run build` while `next dev` is running.
