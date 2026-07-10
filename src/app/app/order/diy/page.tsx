@@ -46,7 +46,7 @@ export default function DiyGalleryPage() {
           step2={{ label: "Book & checkout", active: false }}
         />
 
-        <div className="flex-1 px-5 py-6">
+        <div className="flex-1 px-4 py-6 sm:px-5">
           <div className="mb-1.5 flex items-baseline gap-2.5">
             <h1 className="m-0 text-2xl font-bold tracking-tight">Your gallery</h1>
             <span className="text-sm font-medium text-muted">
@@ -96,9 +96,12 @@ export default function DiyGalleryPage() {
                     type="button"
                     title="Remove"
                     onClick={() => removePhoto(photo.id)}
-                    className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full border-0 bg-[rgba(44,44,42,0.72)] text-sm leading-none text-white"
+                    className="absolute right-0.5 top-0.5 ab-icon-tap rounded-full border-0 bg-transparent p-0"
+                    aria-label="Remove photo"
                   >
-                    ×
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(44,44,42,0.72)] text-sm leading-none text-white">
+                      ×
+                    </span>
                   </button>
                 </div>
               ))}

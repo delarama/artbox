@@ -127,19 +127,19 @@ export function LandingPage() {
 
   return (
     <MobileFrame>
-      <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-navy bg-navy px-6 py-4">
-        <Logo />
-        <div className="flex items-center gap-4">
-          <a href="#how" className="text-sm font-medium text-nav-muted no-underline">
+      <nav className="sticky top-0 z-50 flex items-center justify-between gap-3 border-b border-navy bg-navy px-4 py-3 sm:px-6 sm:py-4">
+        <Logo size="sm" />
+        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+          <a href="#how" className="hidden text-sm font-medium text-nav-muted no-underline min-[390px]:inline">
             How it works
           </a>
-          <Link href="/app/login" className="rounded-full bg-pink px-[18px] py-2 text-sm font-semibold text-white no-underline hover:bg-pink-dark">
+          <Link href="/app/login" className="inline-flex min-h-11 items-center rounded-full bg-pink px-4 text-sm font-semibold text-white no-underline hover:bg-pink-dark sm:px-[18px]">
             Log in
           </Link>
         </div>
       </nav>
 
-      <header className="bg-white px-6 pb-10 pt-14 text-center">
+      <header className="bg-white px-4 pb-10 pt-12 text-center sm:px-6 sm:pt-14">
         <Badge className="mb-5 normal-case">Canadian keepsake studio</Badge>
         <h1 className="mb-4 text-[34px] font-bold leading-[1.15] tracking-tight text-navy">
           Their art.
@@ -166,7 +166,7 @@ export function LandingPage() {
         </div>
       </header>
 
-      <section id="how" className="bg-white px-6 py-16">
+      <section id="how" className="bg-white px-4 py-16 sm:px-6">
         <h2 className="mb-10 text-center text-[26px] font-bold leading-tight tracking-tight text-navy">
           Three steps to a
           <br />
@@ -191,7 +191,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="products" className="bg-white px-6 py-16">
+      <section id="products" className="bg-white px-4 py-16 sm:px-6">
         <h2 className="mb-2 text-center text-[26px] font-bold leading-tight tracking-tight text-navy">
           One box, two
           <br />
@@ -244,7 +244,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="pricing" className="bg-pink-light px-6 py-16">
+      <section id="pricing" className="bg-pink-light px-4 py-16 sm:px-6">
         <h2 className="mb-2.5 text-center text-[26px] font-bold leading-tight tracking-tight text-navy">Simple, honest pricing</h2>
         <p className="mx-auto mb-8 max-w-[320px] text-center text-[15px] leading-relaxed text-[#615f5b]">All prices in Canadian dollars. No surprise customs fees.</p>
         <div className="flex flex-col gap-[18px]">
@@ -299,8 +299,8 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-pink-light py-16">
-        <div className="px-6 text-center">
+      <section className="overflow-x-clip bg-pink-light py-16">
+        <div className="px-4 text-center sm:px-6">
           <h2 className="mb-2 text-[26px] font-bold leading-tight tracking-tight text-body">
             Books parents
             <br />
@@ -308,7 +308,7 @@ export function LandingPage() {
           </h2>
           <p className="mb-7 text-[15px] text-muted">(No pressure.)</p>
         </div>
-        <div className="ab-gallery flex gap-4 overflow-x-auto px-6 pb-5 [scroll-snap-type:x_mandatory]">
+        <div className="ab-gallery ab-scroll-x flex gap-4 px-4 pb-5 sm:px-6 [scroll-snap-type:x_mandatory]">
           {galleryItems.map((item) => (
             <div key={item.title} className="w-[220px] shrink-0 [scroll-snap-align:start]">
               <div className="flex aspect-[5/6] items-center justify-center overflow-hidden rounded-2xl shadow-card" style={{ background: item.bg }}>
@@ -322,7 +322,7 @@ export function LandingPage() {
             </div>
           ))}
         </div>
-        <div className="mt-2 px-6">
+        <div className="mt-2 px-4 sm:px-6">
           <div className="rounded-2xl bg-white p-7 shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
             <span className="block h-5 text-[40px] font-bold leading-[0.5] text-[#F0C2D2]">“</span>
             <p className="mb-3.5 text-base leading-relaxed text-body">
@@ -338,7 +338,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-white px-6 py-16">
+      <section className="bg-white px-4 py-16 sm:px-6">
         <h2 className="mb-8 text-center text-[26px] font-bold leading-tight tracking-tight text-navy">Questions, answered</h2>
         <div className="flex flex-col gap-3">
           {LANDING_FAQS.map((faq, i) => {
@@ -348,7 +348,7 @@ export function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-3.5 border-0 bg-transparent px-5 py-[18px] text-left text-[15px] font-semibold leading-snug text-body"
+                  className="flex w-full min-h-[44px] items-center justify-between gap-3 border-0 bg-transparent px-4 py-3.5 text-left text-[15px] font-semibold leading-snug text-body sm:px-5 sm:py-[18px]"
                 >
                   {faq.q}
                   <span className="w-5 shrink-0 text-center text-xl font-bold text-teal">{isOpen ? "−" : "+"}</span>
@@ -360,7 +360,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="order" className="bg-navy px-6 pb-10 pt-16 text-center">
+      <section id="order" className="bg-navy px-4 pb-10 pt-16 text-center sm:px-6">
         <h2 className="mb-3.5 text-[28px] font-bold leading-tight tracking-tight text-white">Ready to turn that pile into a book?</h2>
         <p className="mx-auto mb-7 max-w-[320px] text-base leading-relaxed text-nav-muted">Start your ArtBox today. We&apos;ll take it from here.</p>
         <Link href="/app/choose" className="block">

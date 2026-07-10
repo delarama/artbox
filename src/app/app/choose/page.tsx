@@ -13,7 +13,7 @@ export default function ChoosePage() {
     <MobileFrame>
       <div className="flex min-h-screen flex-col">
         <AppBackHeader href="/" />
-        <div className="flex-1 px-[22px] pb-6 pt-9">
+        <div className="flex-1 px-4 pb-6 pt-9 sm:px-[22px]">
           <h1 className="mb-2 text-[27px] font-bold leading-[1.15] tracking-tight">
             How do you want to
             <br />

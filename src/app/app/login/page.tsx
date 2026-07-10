@@ -179,7 +179,7 @@ function LoginForm() {
       <div className="flex min-h-screen flex-col">
         <AppBackHeader href="/" />
         <form
-          className="flex flex-1 flex-col px-6 pb-6 pt-9"
+          className="flex flex-1 flex-col px-4 pb-6 pt-9 sm:px-6"
           onSubmit={(e) => {
             e.preventDefault();
             if (method === "otp") {

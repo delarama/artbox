@@ -35,7 +35,7 @@ export default function CheckoutPage() {
           step2={{ label: isDiy ? "Book & checkout" : "Shipping", active: true }}
         />
 
-        <div className="flex-1 px-5 py-6">
+        <div className="flex-1 px-4 py-6 sm:px-5">
           {isDiy ? (
             <div className="mb-[26px]">
               <div className="mb-1.5 text-base font-bold">Choose your book</div>
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
                   return (
                     <SelectionCard key={format.id} selected={selected} accent="purple" onClick={() => setDiyFormat(format.id)}>
                       <RadioDot selected={selected} accent="purple" />
-                      <span className="flex-1 text-left">
+                      <span className="flex-1 min-w-0 text-left">
                         <span className="block text-sm font-semibold">{format.name}</span>
                         <span className="mt-0.5 block text-xs text-muted">{format.desc}</span>
                       </span>
@@ -96,14 +96,14 @@ export default function CheckoutPage() {
 
           <div className="mb-3.5 text-base font-bold">Shipping address</div>
           <div className="mb-[26px] flex flex-col gap-3.5">
-            <div className="flex items-center gap-2.5 rounded-xl border border-[#E4D8DC] bg-[#F9F6F7] px-4 py-3.5">
+            <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#E4D8DC] bg-[#F9F6F7] px-4 py-3.5">
               <span className="text-[15px] font-medium">🇨🇦 Canada</span>
-              <span className="ml-auto text-xs text-muted">Canadian addresses only</span>
+              <span className="text-xs text-muted sm:ml-auto">Canadian addresses only</span>
             </div>
             <Input placeholder="Street address" value={state.ship.street} onChange={(e) => setShip({ street: e.target.value })} />
-            <div className="flex gap-3">
-              <Input placeholder="City" value={state.ship.city} onChange={(e) => setShip({ city: e.target.value })} />
-              <Input placeholder="Postal" className="w-[118px]" value={state.ship.postal} onChange={(e) => setShip({ postal: e.target.value })} />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Input placeholder="City" className="min-w-0 flex-1" value={state.ship.city} onChange={(e) => setShip({ city: e.target.value })} />
+              <Input placeholder="Postal" className="w-full sm:w-[118px] sm:shrink-0" value={state.ship.postal} onChange={(e) => setShip({ postal: e.target.value })} />
             </div>
             <Select value={state.ship.prov} onChange={(e) => setShip({ prov: e.target.value })}>
               {PROVINCES.map((p) => (
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={applyPromo}
-              className={`whitespace-nowrap rounded-xl px-[22px] text-sm font-semibold text-white ${state.promoApplied ? "bg-teal" : "bg-pink"}`}
+              className={`min-h-11 shrink-0 whitespace-nowrap rounded-xl px-[22px] text-sm font-semibold text-white ${state.promoApplied ? "bg-teal" : "bg-pink"}`}
             >
               {state.promoApplied ? "Applied" : "Apply"}
             </button>
@@ -141,9 +141,9 @@ export default function CheckoutPage() {
           ) : (
             <div className="flex flex-col gap-3.5">
               <Input placeholder="Card number" inputMode="numeric" className="tracking-wide" value={state.card.num} onChange={(e) => setCard({ num: e.target.value })} />
-              <div className="flex gap-3">
-                <Input placeholder="MM / YY" value={state.card.exp} onChange={(e) => setCard({ exp: e.target.value })} />
-                <Input placeholder="CVC" inputMode="numeric" className="w-[118px]" value={state.card.cvc} onChange={(e) => setCard({ cvc: e.target.value })} />
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Input placeholder="MM / YY" className="min-w-0 flex-1" value={state.card.exp} onChange={(e) => setCard({ exp: e.target.value })} />
+                <Input placeholder="CVC" inputMode="numeric" className="w-full sm:w-[118px] sm:shrink-0" value={state.card.cvc} onChange={(e) => setCard({ cvc: e.target.value })} />
               </div>
             </div>
           )}

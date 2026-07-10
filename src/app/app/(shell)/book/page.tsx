@@ -108,7 +108,7 @@ export default function BookPage() {
         ) : (
           <>
             <div className="mb-2.5 text-xs font-medium uppercase tracking-wide text-muted">Inside spreads · 32 pages</div>
-            <div className="ab-gallery mb-5 flex gap-3 overflow-x-auto pb-3 [scroll-snap-type:x_mandatory]">
+            <div className="ab-gallery ab-scroll-x mb-5 flex gap-3 pb-3 [scroll-snap-type:x_mandatory]">
               {SPREADS.map((spread) => (
                 <div
                   key={spread.n}

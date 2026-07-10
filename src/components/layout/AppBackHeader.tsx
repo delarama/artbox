@@ -12,7 +12,7 @@ export function AppBackHeader({
   accent?: "pink" | "purple";
 }) {
   const btnClass = cn(
-    "flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full text-lg",
+    "ab-icon-tap rounded-full text-lg",
     accent === "purple" ? "bg-[#EFEEFB] text-purple" : "bg-pink-light text-pink",
   );
 

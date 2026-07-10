@@ -36,7 +36,7 @@ export function BottomTabs() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-30 flex w-full max-w-[440px] -translate-x-1/2 border-t border-[#F3E3E8] bg-white/97 px-0 pb-2.5 pt-2 backdrop-blur-md">
+    <div className="fixed bottom-0 left-1/2 z-30 flex w-full max-w-[440px] -translate-x-1/2 border-t border-[#F3E3E8] bg-white/97 px-0 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md">
       {tabs.map((tab) => {
         const active = pathname === tab.href || (tab.href === "/app/account" && pathname === "/app/track");
         return (
@@ -44,7 +44,7 @@ export function BottomTabs() {
             key={tab.href}
             href={tab.href}
             className={cn(
-              "relative flex flex-1 flex-col items-center gap-1 text-[11px] font-semibold",
+              "relative flex min-h-11 flex-1 flex-col items-center justify-center gap-1 py-1 text-[11px] font-semibold",
               active ? "text-pink" : "text-[#B9AEB2]",
             )}
           >

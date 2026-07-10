@@ -30,7 +30,7 @@ export default function MailOrderPage() {
           step2={{ label: "Shipping", active: false }}
         />
 
-        <div className="flex-1 px-5 py-6">
+        <div className="flex-1 px-4 py-6 sm:px-5">
           <div className="mb-[26px] rounded-[18px] border border-border bg-white p-4 shadow-card">
             <div className="mb-4 flex aspect-[16/10] items-center justify-center overflow-hidden rounded-xl bg-[repeating-linear-gradient(135deg,#E9D3B8_0px,#E9D3B8_14px,#F1E2CE_14px,#F1E2CE_28px)]">
               <span className="text-center font-mono text-[11px] leading-relaxed text-[#9A7B52]">
@@ -73,11 +73,11 @@ export default function MailOrderPage() {
             <div className="flex items-center justify-between gap-3 border-t border-[#F3E9EC] pt-3.5">
               <span className="text-[13px] font-medium text-muted">Quantity</span>
               <div className="flex items-center gap-3.5">
-                <button type="button" onClick={() => setQty(state.qty - 1)} className="flex h-[34px] w-[34px] items-center justify-center rounded-full border-[1.5px] border-[#E4D2D8] bg-white text-xl text-pink">
+                <button type="button" onClick={() => setQty(state.qty - 1)} aria-label="Decrease quantity" className="ab-icon-tap rounded-full border-[1.5px] border-[#E4D2D8] bg-white text-xl text-pink">
                   −
                 </button>
                 <span className="min-w-5 text-center text-[17px] font-bold">{state.qty}</span>
-                <button type="button" onClick={() => setQty(state.qty + 1)} className="flex h-[34px] w-[34px] items-center justify-center rounded-full border-[1.5px] border-[#E4D2D8] bg-white text-xl text-pink">
+                <button type="button" onClick={() => setQty(state.qty + 1)} aria-label="Increase quantity" className="ab-icon-tap rounded-full border-[1.5px] border-[#E4D2D8] bg-white text-xl text-pink">
                   +
                 </button>
               </div>
@@ -93,7 +93,7 @@ export default function MailOrderPage() {
           <h2 className="mb-3 text-lg font-bold tracking-tight">Do you want your artwork back?</h2>
           <SelectionCard selected={state.returnArt} onClick={toggleReturnArt} className="mb-0">
             <CheckBox checked={state.returnArt} />
-            <span className="flex-1 text-left">
+            <span className="flex-1 min-w-0 text-left">
               <span className="block text-sm font-semibold">Return my artwork</span>
               <span className="mt-0.5 block text-xs text-muted">We carefully pack &amp; mail every original piece back.</span>
             </span>
@@ -107,7 +107,7 @@ export default function MailOrderPage() {
               return (
                 <SelectionCard key={upgrade.key} selected={on} onClick={() => toggleUpgrade(upgrade.key)}>
                   <CheckBox checked={on} />
-                  <span className="flex-1 text-left">
+                  <span className="flex-1 min-w-0 text-left">
                     <span className="block text-sm font-semibold">{upgrade.name}</span>
                     <span className="mt-0.5 block text-xs leading-relaxed text-muted">{upgrade.desc}</span>
                   </span>
@@ -126,7 +126,7 @@ export default function MailOrderPage() {
               return (
                 <SelectionCard key={speed.id} selected={selected} onClick={() => setSpeed(speed.id)}>
                   <RadioDot selected={selected} />
-                  <span className="flex-1 text-left">
+                  <span className="flex-1 min-w-0 text-left">
                     <span className="block text-sm font-semibold">{speed.name}</span>
                     <span className="mt-0.5 block text-xs text-muted">{speed.desc}</span>
                   </span>

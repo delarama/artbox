@@ -26,10 +26,12 @@
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
   body {
     @apply bg-canvas font-sans text-body;
+    overflow-x: clip;
   }
 
   *:focus-visible {
@@ -39,6 +41,15 @@
 }
 
 @layer utilities {
+  .ab-icon-tap {
+    @apply inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center;
+  }
+
+  .ab-scroll-x {
+    @apply max-w-full overflow-x-auto overscroll-x-contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .ab-gallery::-webkit-scrollbar {
     height: 6px;
   }
