@@ -154,7 +154,6 @@ export function LandingPage() {
             Start your ArtBox <span className="text-[17px]">→</span>
           </Button>
         </Link>
-        <p className="mt-4 text-xs font-medium text-muted">Made in Canada · Priced in CAD · Ships in 2–3 weeks</p>
         <div className="mt-9 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[20px] bg-pink-light">
           <span className="px-6 text-center font-mono text-[11px] leading-relaxed tracking-wide text-muted">
             [ LIFESTYLE PHOTO ]
@@ -164,6 +163,13 @@ export function LandingPage() {
             child&apos;s colourful art on the pages
           </span>
         </div>
+        <ul className="mt-7 flex list-none items-stretch justify-between gap-2 p-0 text-center">
+          {["Made in Canada", "Priced in CAD", "Art returned safely"].map((item) => (
+            <li key={item} className="min-w-0 flex-1 text-[12px] font-semibold leading-snug text-muted">
+              {item}
+            </li>
+          ))}
+        </ul>
       </header>
 
       <section id="how" className="bg-white px-4 py-16 sm:px-6">
